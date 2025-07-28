@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>左右為難 - 互動遊戲</title>
+    <!-- 引入 Tailwind CSS 以方便快速設計美觀的介面 -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* 額外添加一些樣式，確保在所有裝置上都能有好的視覺效果 */
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, 'Noto Sans', sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+        /* 確保內容區域在垂直方向上能填滿空間 */
+        .content-container {
+            min-height: 450px; /* 增加最小高度以容納更大的字體 */
+        }
+    </style>
+</head>
+<body class="bg-gray-100 flex items-center justify-center min-h-screen p-4">
+
+    <!-- 主遊戲容器 -->
+    <div class="bg-white rounded-2xl shadow-2xl p-6 md:p-10 w-full max-w-4xl text-center flex flex-col">
+
+        <!-- 投影片內容區域 -->
+        <div id="slide-content" class="content-container flex-grow flex flex-col items-center justify-center mb-6">
+            <!-- 題目類別 -->
+            <h1 id="topic" class="text-4xl md:text-5xl font-bold text-gray-800 mb-6"></h1>
+            <!-- 題目項目 Emoji -->
+            <div id="emoji" class="text-8xl md:text-9xl mb-4"></div>
+            <!-- 題目項目文字 -->
+            <h2 id="item" class="text-7xl md:text-9xl font-extrabold text-blue-600 mb-8"></h2>
+            <!-- 正確答案提示 (給主持人看)，預設隱藏 -->
+            <div id="answer" class="text-5xl md:text-7xl font-bold hidden"></div>
+        </div>
+
+        <!-- 操作按鈕區域 -->
+        <div class="w-full flex flex-col items-center">
+            <!-- 顯示答案按鈕 -->
+            <button id="show-answer-btn" class="text-lg md:text-xl font-bold bg-green-500 hover:bg-green-600 text-white py-3 px-8 rounded-lg transition-colors w-full md:w-2/3 mb-5">
+                顯示答案
+            </button>
+            <!-- 導覽按鈕區域 -->
+            <div class="flex w-full justify-between gap-3">
+                <button id="prev-btn" class="text-base md:text-lg font-bold bg-gray-300 hover:bg-gray-400 text-gray-800 py-2 px-4 rounded-lg transition-colors w-1/2">
+                    上一張
+                </button>
+                <button id="next-btn" class="text-base md:text-lg font-bold bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded-lg transition-colors w-1/2">
+                    下一張
+                </button>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        // 步驟 1: 將所有題目資料結構化，並優化題目問法
+        const slides = [
+            // 第一組題目：紅色
+            { topic: "這個物品是紅色的嗎？", item: "草莓", isCorrect: true, emoji: "🍓" },
+            { topic: "這個物品是紅色的嗎？", item: "香蕉", isCorrect: false, emoji: "🍌" },
+            { topic: "這個物品是紅色的嗎？", item: "番茄", isCorrect: true, emoji: "🍅" },
+            { topic: "這個物品是紅色的嗎？", item: "高麗菜", isCorrect: false, emoji: "🥬" },
+            { topic: "這個物品是紅色的嗎？", item: "消防車", isCorrect: true, emoji: "🚒" },
+            { topic: "這個物品是紅色的嗎？", item: "蘿蔔糕", isCorrect: false, emoji: "🧇" },
+            { topic: "這個物品是紅色的嗎？", item: "綠豆湯", isCorrect: false, emoji: "🥣" },
+            { topic: "這個物品是紅色的嗎？", item: "紅包", isCorrect: true, emoji: "🧧" },
+            { topic: "這個物品是紅色的嗎？", item: "紅燈", isCorrect: true, emoji: "🔴" },
+            { topic: "這個物品是紅色的嗎？", item: "菠菜", isCorrect: false, emoji: "🌿" },
+            
+            // 第二組題目：交通工具
+            { topic: "這是交通工具嗎？", item: "火車", isCorrect: true, emoji: "🚂" },
+            { topic: "這是交通工具嗎？", item: "火爐", isCorrect: false, emoji: "🔥" },
+            { topic: "這是交通工具嗎？", item: "公車", isCorrect: true, emoji: "🚌" },
+            { topic: "這是交通工具嗎？", item: "公園", isCorrect: false, emoji: "🏞️" },
+            { topic: "這是交通工具嗎？", item: "椅子", isCorrect: false, emoji: "🪑" },
+            { topic: "這是交通工具嗎？", item: "飛機", isCorrect: true, emoji: "✈️" },
+            { topic: "這是交通工具嗎？", item: "熱氣球", isCorrect: false, emoji: "🎈" }, // 根據使用者要求修正為 false
+            { topic: "這是交通工具嗎？", item: "捷運", isCorrect: true, emoji: "🚇" },
+            { topic: "這是交通工具嗎？", item: "計程車", isCorrect: true, emoji: "🚕" },
+            { topic: "這是交通工具嗎？", item: "吹風機", isCorrect: false, emoji: "💨" },
+
+            // 第三組題目：可以吃的
+            { topic: "這個東西可以吃嗎？", item: "饅頭", isCorrect: true, emoji: "⚪" },
+            { topic: "這個東西可以吃嗎？", item: "肥皂", isCorrect: false, emoji: "🧼" },
+            { topic: "這個東西可以吃嗎？", item: "蘋果", isCorrect: true, emoji: "🍎" },
+            { topic: "這個東西可以吃嗎？", item: "牙刷", isCorrect: false, emoji: "🪥" },
+            { topic: "這個東西可以吃嗎？", item: "滷肉飯", isCorrect: true, emoji: "🍚" },
+            { topic: "這個東西可以吃嗎？", item: "碗", isCorrect: false, emoji: "🥣" },
+            { topic: "這個東西可以吃嗎？", item: "粽子", isCorrect: true, emoji: "🍙" },
+            { topic: "這個東西可以吃嗎？", item: "雞毛撢子", isCorrect: false, emoji: "🧹" },
+            { topic: "這個東西可以吃嗎？", item: "綠豆湯", isCorrect: true, emoji: "🥣" },
+            { topic: "這個東西可以吃嗎？", item: "拖鞋", isCorrect: false, emoji: "🩴" },
+            
+            // 第四組題目：廚房用品
+            { topic: "這是廚房用品嗎？", item: "鍋子", isCorrect: true, emoji: "🍳" },
+            { topic: "這是廚房用品嗎？", item: "電視", isCorrect: false, emoji: "📺" },
+            { topic: "這是廚房用品嗎？", item: "電鍋", isCorrect: true, emoji: "🍚" },
+            { topic: "這是廚房用品嗎？", item: "鍋鏟", isCorrect: true, emoji: "🍳" },
+            { topic: "這是廚房用品嗎？", item: "烘碗機", isCorrect: true, emoji: "�️" },
+            { topic: "這是廚房用品嗎？", item: "除濕機", isCorrect: false, emoji: "💧" },
+            { topic: "這是廚房用品嗎？", item: "菜刀", isCorrect: true, emoji: "🔪" },
+            { topic: "這是廚房用品嗎？", item: "衣架", isCorrect: false, emoji: "👚" },
+            { topic: "這是廚房用品嗎？", item: "電風扇", isCorrect: false, emoji: "🌀" },
+            { topic: "這是廚房用品嗎？", item: "瓦斯爐", isCorrect: true, emoji: "🔥" },
+
+            // 第五組題目：真的花
+            { topic: "這是真的花嗎？", item: "向日葵", isCorrect: true, emoji: "🌻" },
+            { topic: "這是真的花嗎？", item: "屁股開花", isCorrect: false, emoji: "🍑" },
+            { topic: "這是真的花嗎？", item: "玫瑰花", isCorrect: true, emoji: "🌹" },
+            { topic: "這是真的花嗎？", item: "牽牛花", isCorrect: true, emoji: "🌸" },
+            { topic: "這是真的花嗎？", item: "百合花", isCorrect: true, emoji: "💮" },
+            { topic: "這是真的花嗎？", item: "有錢花", isCorrect: false, emoji: "💸" },
+            { topic: "這是真的花嗎？", item: "鬱金香", isCorrect: true, emoji: "🌷" },
+            { topic: "這是真的花嗎？", item: "老花", isCorrect: false, emoji: "👓" },
+            { topic: "這是真的花嗎？", item: "五月花", isCorrect: false, emoji: "🤧" },
+            { topic: "這是真的花嗎？", item: "繡球花", isCorrect: true, emoji: "💐" },
+        ];
+
+        // 步驟 2: 獲取需要操作的 HTML 元素
+        const topicEl = document.getElementById('topic');
+        const itemEl = document.getElementById('item');
+        const emojiEl = document.getElementById('emoji');
+        const answerEl = document.getElementById('answer');
+        const prevBtn = document.getElementById('prev-btn');
+        const nextBtn = document.getElementById('next-btn');
+        const showAnswerBtn = document.getElementById('show-answer-btn');
+
+        // 追蹤當前投影片的索引
+        let currentSlide = 0;
+
+        // 步驟 3: 核心功能 - 渲染投影片
+        function renderSlide() {
+            // 從陣列中獲取當前投影片的資料
+            const slideData = slides[currentSlide];
+
+            // 更新畫面上的內容
+            topicEl.textContent = slideData.topic;
+            itemEl.textContent = slideData.item;
+            emojiEl.textContent = slideData.emoji;
+
+            // 準備答案內容，但先不顯示
+            if (slideData.isCorrect) {
+                answerEl.textContent = 'Ｏ (圈)';
+                answerEl.className = 'text-5xl md:text-7xl font-bold text-green-500';
+            } else {
+                answerEl.textContent = 'Ｘ (叉)';
+                answerEl.className = 'text-5xl md:text-7xl font-bold text-red-500';
+            }
+
+            // **重要：切換投影片時，永遠隱藏答案並顯示「顯示答案」按鈕**
+            answerEl.classList.add('hidden');
+            showAnswerBtn.classList.remove('hidden');
+
+            // 更新按鈕的狀態
+            prevBtn.disabled = currentSlide === 0;
+            prevBtn.classList.toggle('opacity-50', currentSlide === 0);
+            prevBtn.classList.toggle('cursor-not-allowed', currentSlide === 0);
+
+            nextBtn.disabled = currentSlide === slides.length - 1;
+            nextBtn.classList.toggle('opacity-50', currentSlide === slides.length - 1);
+            nextBtn.classList.toggle('cursor-not-allowed', currentSlide === slides.length - 1);
+        }
+
+        // 步驟 4: 綁定按鈕的點擊事件
+        showAnswerBtn.addEventListener('click', () => {
+            answerEl.classList.remove('hidden'); // 顯示答案
+            showAnswerBtn.classList.add('hidden'); // 顯示答案後，將自己隱藏
+        });
+        
+        nextBtn.addEventListener('click', () => {
+            if (currentSlide < slides.length - 1) {
+                currentSlide++;
+                renderSlide();
+            }
+        });
+
+        prevBtn.addEventListener('click', () => {
+            if (currentSlide > 0) {
+                currentSlide--;
+                renderSlide();
+            }
+        });
+
+        // 初始載入：顯示第一張投影片
+        renderSlide();
+    </script>
+</body>
+</html>

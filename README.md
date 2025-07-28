@@ -1,6 +1,6 @@
 # **【左右為難】台灣在地化失智症長者互動問答遊戲**
 
-> taiwan-dementia-quiz-game
+![HTML5](https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white) ![CSS3](https://img.shields.io/badge/CSS3-1572B6?style=for-the-badge&logo=css3&logoColor=white) ![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black) ![TailwindCSS](https://img.shields.io/badge/Tailwind_CSS-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white) [![Website](https://img.shields.io/badge/Website-blue?style=for-the-badge&logo=githubpages&logoColor=white)](https://hctsai1006.github.io/taiwan-dementia-quiz-game/)
 
 這是一款專為台灣失智症長者及高齡族群設計的互動式團體問答遊戲。此專案旨在透過在地化的生活主題、高對比的視覺設計與真實圖片，提供一個有趣、無壓力且富有懷舊感的認知刺激活動。
 

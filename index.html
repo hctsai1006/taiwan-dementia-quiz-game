@@ -67,106 +67,109 @@
     </div>
 
     <script>
+        // 圖片庫的基礎 URL
+        const image_base_url = "https://raw.githubusercontent.com/hctsai1006/taiwan-dementia-quiz-game/main/images/";
+
         // 步驟 1: 結構化所有人的題目
         // 宣妤的題目
         const xuanyu_set1 = [
-            { topic: "這個物品是紅色的嗎？", item: "草莓", isCorrect: true, image: "https://github.com/hctsai1006/taiwan-dementia-quiz-game/blob/main/images/草莓.png" },
-            { topic: "這個物品是紅色的嗎？", item: "香蕉", isCorrect: false, image: "https://github.com/hctsai1006/taiwan-dementia-quiz-game/blob/main/images/香蕉.png" },
-            { topic: "這個物品是紅色的嗎？", item: "番茄", isCorrect: true, image: "https://github.com/hctsai1006/taiwan-dementia-quiz-game/blob/main/images/番茄.png" },
-            { topic: "這個物品是紅色的嗎？", item: "高麗菜", isCorrect: false, image: "https://github.com/hctsai1006/taiwan-dementia-quiz-game/blob/main/images/高麗菜.png" },
-            { topic: "這個物品是紅色的嗎？", item: "消防車", isCorrect: true, image: "https://github.com/hctsai1006/taiwan-dementia-quiz-game/blob/main/images/消防車.png" },
-            { topic: "這個物品是紅色的嗎？", item: "蘿蔔糕", isCorrect: false, image: "https://github.com/hctsai1006/taiwan-dementia-quiz-game/blob/main/images/蘿蔔糕.png" },
-            { topic: "這個物品是紅色的嗎？", item: "綠豆湯", isCorrect: false, image: "https://github.com/hctsai1006/taiwan-dementia-quiz-game/blob/main/images/綠豆湯.png" },
-            { topic: "這個物品是紅色的嗎？", item: "紅包", isCorrect: true, image: "https://github.com/hctsai1006/taiwan-dementia-quiz-game/blob/main/images/紅包.png" },
-            { topic: "這個物品是紅色的嗎？", item: "紅燈", isCorrect: true, image: "https://github.com/hctsai1006/taiwan-dementia-quiz-game/blob/main/images/紅燈.png" },
-            { topic: "這個物品是紅色的嗎？", item: "菠菜", isCorrect: false, image: "https://github.com/hctsai1006/taiwan-dementia-quiz-game/blob/main/images/波菜.png" },
+            { topic: "這個物品是紅色的嗎？", item: "草莓", isCorrect: true, image: image_base_url + "strawberry.png" },
+            { topic: "這個物品是紅色的嗎？", item: "香蕉", isCorrect: false, image: image_base_url + "banana.png" },
+            { topic: "這個物品是紅色的嗎？", item: "番茄", isCorrect: true, image: image_base_url + "tomato.png" },
+            { topic: "這個物品是紅色的嗎？", item: "高麗菜", isCorrect: false, image: image_base_url + "cabbage.png" },
+            { topic: "這個物品是紅色的嗎？", item: "消防車", isCorrect: true, image: image_base_url + "fire_truck.png" },
+            { topic: "這個物品是紅色的嗎？", item: "蘿蔔糕", isCorrect: false, image: image_base_url + "turnip_cake.png" },
+            { topic: "這個物品是紅色的嗎？", item: "綠豆湯", isCorrect: false, image: image_base_url + "mung_bean_soup.png" },
+            { topic: "這個物品是紅色的嗎？", item: "紅包", isCorrect: true, image: image_base_url + "red_envelope.png" },
+            { topic: "這個物品是紅色的嗎？", item: "紅燈", isCorrect: true, image: image_base_url + "red_light.png" },
+            { topic: "這個物品是紅色的嗎？", item: "菠菜", isCorrect: false, image: image_base_url + "spinach.png" },
         ];
         const xuanyu_set2 = [
-            { topic: "這是交通工具嗎？", item: "火車", isCorrect: true, image: "https://github.com/hctsai1006/taiwan-dementia-quiz-game/blob/main/images/火車.png" },
-            { topic: "這是交通工具嗎？", item: "火爐", isCorrect: false, image: "https://github.com/hctsai1006/taiwan-dementia-quiz-game/blob/main/images/瓦斯爐.png" },
-            { topic: "這是交通工具嗎？", item: "公車", isCorrect: true, image: "https://github.com/hctsai1006/taiwan-dementia-quiz-game/blob/main/images/公車.png" },
-            { topic: "這是交通工具嗎？", item: "公園", isCorrect: false, image: "https://github.com/hctsai1006/taiwan-dementia-quiz-game/blob/main/images/公園.png" },
-            { topic: "這是交通工具嗎？", item: "椅子", isCorrect: false, image: "https://github.com/hctsai1006/taiwan-dementia-quiz-game/blob/main/images/椅子.png" },
-            { topic: "這是交通工具嗎？", item: "飛機", isCorrect: true, image: "https://github.com/hctsai1006/taiwan-dementia-quiz-game/blob/main/images/飛機.png" },
-            { topic: "這是交通工具嗎？", item: "雲霄飛車", isCorrect: false, image: "https://github.com/hctsai1006/taiwan-dementia-quiz-game/blob/main/images/雲霄飛車.png" },
-            { topic: "這是交通工具嗎？", item: "捷運", isCorrect: true, image: "https://github.com/hctsai1006/taiwan-dementia-quiz-game/blob/main/images/捷運.png" },
-            { topic: "這是交通工具嗎？", item: "計程車", isCorrect: true, image: "https://github.com/hctsai1006/taiwan-dementia-quiz-game/blob/main/images/計程車.png" },
-            { topic: "這是交通工具嗎？", item: "吹風機", isCorrect: false, image: "https://github.com/hctsai1006/taiwan-dementia-quiz-game/blob/main/images/吹風機.png" },
+            { topic: "這是交通工具嗎？", item: "火車", isCorrect: true, image: image_base_url + "train.png" },
+            { topic: "這是交通工具嗎？", item: "火爐", isCorrect: false, image: image_base_url + "stove.png" },
+            { topic: "這是交通工具嗎？", item: "公車", isCorrect: true, image: image_base_url + "bus.png" },
+            { topic: "這是交通工具嗎？", item: "公園", isCorrect: false, image: image_base_url + "park.png" },
+            { topic: "這是交通工具嗎？", item: "椅子", isCorrect: false, image: image_base_url + "chair.png" },
+            { topic: "這是交通工具嗎？", item: "飛機", isCorrect: true, image: image_base_url + "airplane.png" },
+            { topic: "這是交通工具嗎？", item: "雲霄飛車", isCorrect: false, image: "https://placehold.co/400x400/e2e8f0/4a5568?text=雲霄飛車" },
+            { topic: "這是交通工具嗎？", item: "捷運", isCorrect: true, image: image_base_url + "mrt.png" },
+            { topic: "這是交通工具嗎？", item: "計程車", isCorrect: true, image: image_base_url + "taxi.png" },
+            { topic: "這是交通工具嗎？", item: "吹風機", isCorrect: false, image: image_base_url + "hair_dryer.png" },
         ];
         // 秀吉的題目
         const xiuji_set1 = [
-            { topic: "這種動物會飛嗎？", item: "麻雀", isCorrect: true, image: "https://github.com/hctsai1006/taiwan-dementia-quiz-game/blob/main/images/麻雀.png" },
-            { topic: "這種動物會飛嗎？", item: "貓咪", isCorrect: false, image: "https://github.com/hctsai1006/taiwan-dementia-quiz-game/blob/main/images/貓咪.png" },
-            { topic: "這種動物會飛嗎？", item: "蝴蝶", isCorrect: true, image: "https://github.com/hctsai1006/taiwan-dementia-quiz-game/blob/main/images/蝴蝶.png" },
-            { topic: "這種動物會飛嗎？", item: "狗狗", isCorrect: false, image: "https://github.com/hctsai1006/taiwan-dementia-quiz-game/blob/main/images/小狗.png" },
-            { topic: "這種動物會飛嗎？", item: "老鷹", isCorrect: true, image: "https://github.com/hctsai1006/taiwan-dementia-quiz-game/blob/main/images/老鷹.png" },
-            { topic: "這種動物會飛嗎？", item: "金魚", isCorrect: false, image: "https://github.com/hctsai1006/taiwan-dementia-quiz-game/blob/main/images/金魚.png" },
-            { topic: "這種動物會飛嗎？", item: "蚊子", isCorrect: true, image: "https://github.com/hctsai1006/taiwan-dementia-quiz-game/blob/main/images/蚊子.jpg" },
-            { topic: "這種動物會飛嗎？", item: "豬", isCorrect: false, image: "https://github.com/hctsai1006/taiwan-dementia-quiz-game/blob/main/images/豬.jpg" },
-            { topic: "這種動物會飛嗎？", item: "鴿子", isCorrect: true, image: "https://github.com/hctsai1006/taiwan-dementia-quiz-game/blob/main/images/鴿子.png" },
-            { topic: "這種動物會飛嗎？", item: "烏龜", isCorrect: false, image: "https://github.com/hctsai1006/taiwan-dementia-quiz-game/blob/main/images/烏龜.jpg" },
+            { topic: "這種動物會飛嗎？", item: "麻雀", isCorrect: true, image: image_base_url + "sparrow.png" },
+            { topic: "這種動物會飛嗎？", item: "貓咪", isCorrect: false, image: image_base_url + "cat.png" },
+            { topic: "這種動物會飛嗎？", item: "蝴蝶", isCorrect: true, image: image_base_url + "butterfly.png" },
+            { topic: "這種動物會飛嗎？", item: "狗狗", isCorrect: false, image: image_base_url + "dog.png" },
+            { topic: "這種動物會飛嗎？", item: "老鷹", isCorrect: true, image: image_base_url + "eagle.png" },
+            { topic: "這種動物會飛嗎？", item: "金魚", isCorrect: false, image: image_base_url + "goldfish.png" },
+            { topic: "這種動物會飛嗎？", item: "蚊子", isCorrect: true, image: image_base_url + "mosquito.png" },
+            { topic: "這種動物會飛嗎？", item: "豬", isCorrect: false, image: image_base_url + "pig.png" },
+            { topic: "這種動物會飛嗎？", item: "鴿子", isCorrect: true, image: image_base_url + "pigeon.png" },
+            { topic: "這種動物會飛嗎？", item: "烏龜", isCorrect: false, image: image_base_url + "turtle.png" },
         ];
         const xiuji_set2 = [
-            { topic: "這個東西可以吃嗎？", item: "饅頭", isCorrect: true, image: "https://github.com/hctsai1006/taiwan-dementia-quiz-game/blob/main/images/饅頭.png" },
-            { topic: "這個東西可以吃嗎？", item: "肥皂", isCorrect: false, image: "https://github.com/hctsai1006/taiwan-dementia-quiz-game/blob/main/images/肥皂.png" },
-            { topic: "這個東西可以吃嗎？", item: "蘋果", isCorrect: true, image: "https://github.com/hctsai1006/taiwan-dementia-quiz-game/blob/main/images/蘋果.png" },
-            { topic: "這個東西可以吃嗎？", item: "牙刷", isCorrect: false, image: "https://github.com/hctsai1006/taiwan-dementia-quiz-game/blob/main/images/牙刷.png" },
-            { topic: "這個東西可以吃嗎？", item: "滷肉飯", isCorrect: true, image: "https://github.com/hctsai1006/taiwan-dementia-quiz-game/blob/main/images/滷肉飯.png" },
-            { topic: "這個東西可以吃嗎？", item: "碗", isCorrect: false, image: "https://github.com/hctsai1006/taiwan-dementia-quiz-game/blob/main/images/碗.png" },
-            { topic: "這個東西可以吃嗎？", item: "粽子", isCorrect: true, image: "https://github.com/hctsai1006/taiwan-dementia-quiz-game/blob/main/images/粽子.png" },
-            { topic: "這個東西可以吃嗎？", item: "雞毛撢子", isCorrect: false, image: "https://github.com/hctsai1006/taiwan-dementia-quiz-game/blob/main/images/雞毛撢子.png" },
-            { topic: "這個東西可以吃嗎？", item: "綠豆湯", isCorrect: true, image: "https://github.com/hctsai1006/taiwan-dementia-quiz-game/blob/main/images/綠豆湯.png" },
-            { topic: "這個東西可以吃嗎？", item: "拖鞋", isCorrect: false, image: "https://github.com/hctsai1006/taiwan-dementia-quiz-game/blob/main/images/藍白拖.jpg" },
+            { topic: "這個東西可以吃嗎？", item: "饅頭", isCorrect: true, image: image_base_url + "steamed_bun.png" },
+            { topic: "這個東西可以吃嗎？", item: "肥皂", isCorrect: false, image: image_base_url + "soap.png" },
+            { topic: "這個東西可以吃嗎？", item: "蘋果", isCorrect: true, image: image_base_url + "apple.png" },
+            { topic: "這個東西可以吃嗎？", item: "牙刷", isCorrect: false, image: image_base_url + "toothbrush.png" },
+            { topic: "這個東西可以吃嗎？", item: "滷肉飯", isCorrect: true, image: image_base_url + "braised_pork_rice.png" },
+            { topic: "這個東西可以吃嗎？", item: "碗", isCorrect: false, image: image_base_url + "bowl.png" },
+            { topic: "這個東西可以吃嗎？", item: "粽子", isCorrect: true, image: image_base_url + "zongzi.png" },
+            { topic: "這個東西可以吃嗎？", item: "雞毛撢子", isCorrect: false, image: image_base_url + "feather_duster.png" },
+            { topic: "這個東西可以吃嗎？", item: "綠豆湯", isCorrect: true, image: image_base_url + "mung_bean_soup.png" },
+            { topic: "這個東西可以吃嗎？", item: "拖鞋", isCorrect: false, image: image_base_url + "slippers.png" },
         ];
         // 宜璇的題目
         const yixuan_set1 = [
-            { topic: "這是廚房用品嗎？", item: "鍋子", isCorrect: true, image: "https://github.com/hctsai1006/taiwan-dementia-quiz-game/blob/main/images/鍋子.png" },
-            { topic: "這是廚房用品嗎？", item: "電視", isCorrect: false, image: "https://github.com/hctsai1006/taiwan-dementia-quiz-game/blob/main/images/電視.png" },
-            { topic: "這是廚房用品嗎？", item: "電鍋", isCorrect: true, image: "https://github.com/hctsai1006/taiwan-dementia-quiz-game/blob/main/images/電鍋.png" },
-            { topic: "這是廚房用品嗎？", item: "鍋鏟", isCorrect: true, image: "https://github.com/hctsai1006/taiwan-dementia-quiz-game/blob/main/images/鍋鏟.png" },
-            { topic: "這是廚房用品嗎？", item: "烘碗機", isCorrect: true, image: "https://github.com/hctsai1006/taiwan-dementia-quiz-game/blob/main/images/烘碗機.png" },
-            { topic: "這是廚房用品嗎？", item: "除濕機", isCorrect: false, image: "https://github.com/hctsai1006/taiwan-dementia-quiz-game/blob/main/images/除濕機.png" },
-            { topic: "這是廚房用品嗎？", item: "菜刀", isCorrect: true, image: "https://github.com/hctsai1006/taiwan-dementia-quiz-game/blob/main/images/菜刀.png" },
-            { topic: "這是廚房用品嗎？", item: "衣架", isCorrect: false, image: "https://github.com/hctsai1006/taiwan-dementia-quiz-game/blob/main/images/衣架.png" },
-            { topic: "這是廚房用品嗎？", item: "電風扇", isCorrect: false, image: "https://github.com/hctsai1006/taiwan-dementia-quiz-game/blob/main/images/電風扇.png" },
-            { topic: "這是廚房用品嗎？", item: "瓦斯爐", isCorrect: true, image: "https://github.com/hctsai1006/taiwan-dementia-quiz-game/blob/main/images/瓦斯爐.png" },
+            { topic: "這是廚房用品嗎？", item: "鍋子", isCorrect: true, image: image_base_url + "pot.png" },
+            { topic: "這是廚房用品嗎？", item: "電視", isCorrect: false, image: image_base_url + "tv.png" },
+            { topic: "這是廚房用品嗎？", item: "電鍋", isCorrect: true, image: image_base_url + "rice_cooker.png" },
+            { topic: "這是廚房用品嗎？", item: "鍋鏟", isCorrect: true, image: image_base_url + "spatula.png" },
+            { topic: "這是廚房用品嗎？", item: "烘碗機", isCorrect: true, image: image_base_url + "dish_dryer.png" },
+            { topic: "這是廚房用品嗎？", item: "除濕機", isCorrect: false, image: image_base_url + "dehumidifier.png" },
+            { topic: "這是廚房用品嗎？", item: "菜刀", isCorrect: true, image: image_base_url + "kitchen_knife.png" },
+            { topic: "這是廚房用品嗎？", item: "衣架", isCorrect: false, image: image_base_url + "hanger.png" },
+            { topic: "這是廚房用品嗎？", item: "電風扇", isCorrect: false, image: image_base_url + "fan.png" },
+            { topic: "這是廚房用品嗎？", item: "瓦斯爐", isCorrect: true, image: image_base_url + "gas_stove.png" },
         ];
         const yixuan_set2 = [
-            { topic: "這是真的花嗎？", item: "向日葵", isCorrect: true, image: "https://github.com/hctsai1006/taiwan-dementia-quiz-game/blob/main/images/向日葵.png" },
-            { topic: "這是真的花嗎？", item: "屁股開花", isCorrect: false, image: "https://github.com/hctsai1006/taiwan-dementia-quiz-game/blob/main/images/屁股開花.png" },
-            { topic: "這是真的花嗎？", item: "玫瑰花", isCorrect: true, image: "https://github.com/hctsai1006/taiwan-dementia-quiz-game/blob/main/images/玫瑰花.png" },
-            { topic: "這是真的花嗎？", item: "牽牛花", isCorrect: true, image: "https://github.com/hctsai1006/taiwan-dementia-quiz-game/blob/main/images/牽牛花.png" },
-            { topic: "這是真的花嗎？", item: "百合花", isCorrect: true, image: "https://github.com/hctsai1006/taiwan-dementia-quiz-game/blob/main/images/百合花.png" },
-            { topic: "這是真的花嗎？", item: "有錢花", isCorrect: false, image: "https://github.com/hctsai1006/taiwan-dementia-quiz-game/blob/main/images/有錢花.png" },
-            { topic: "這是真的花嗎？", item: "鬱金香", isCorrect: true, image: "https://github.com/hctsai1006/taiwan-dementia-quiz-game/blob/main/images/鬱金香.png" },
-            { topic: "這是真的花嗎？", item: "老花", isCorrect: false, image: "https://github.com/hctsai1006/taiwan-dementia-quiz-game/blob/main/images/老花.png" },
-            { topic: "這是真的花嗎？", item: "五月花", isCorrect: false, image: "https://github.com/hctsai1006/taiwan-dementia-quiz-game/blob/main/images/五月花.jpg" },
-            { topic: "這是真的花嗎？", item: "繡球花", isCorrect: true, image: "https://github.com/hctsai1006/taiwan-dementia-quiz-game/blob/main/images/繡球花.png" },
+            { topic: "這是真的花嗎？", item: "向日葵", isCorrect: true, image: image_base_url + "sunflower.png" },
+            { topic: "這是真的花嗎？", item: "屁股開花", isCorrect: false, image: image_base_url + "fall_down.png" },
+            { topic: "這是真的花嗎？", item: "玫瑰花", isCorrect: true, image: image_base_url + "rose.png" },
+            { topic: "這是真的花嗎？", item: "牽牛花", isCorrect: true, image: image_base_url + "morning_glory.png" },
+            { topic: "這是真的花嗎？", item: "百合花", isCorrect: true, image: image_base_url + "lily.png" },
+            { topic: "這是真的花嗎？", item: "有錢花", isCorrect: false, image: image_base_url + "spending_money.png" },
+            { topic: "這是真的花嗎？", item: "鬱金香", isCorrect: true, image: image_base_url + "tulip.png" },
+            { topic: "這是真的花嗎？", item: "老花", isCorrect: false, image: image_base_url + "presbyopia_glasses.png" },
+            { topic: "這是真的花嗎？", item: "五月花", isCorrect: false, image: image_base_url + "tissue.png" },
+            { topic: "這是真的花嗎？", item: "繡球花", isCorrect: true, image: image_base_url + "hydrangea.png" },
         ];
         // 定萬的題目
         const dingwan_set1 = [
-            { topic: "這是動物嗎？", item: "長頸鹿", isCorrect: true, image: "https://github.com/hctsai1006/taiwan-dementia-quiz-game/blob/main/images/長頸鹿.png" },
-            { topic: "這是動物嗎？", item: "蜜蜂", isCorrect: true, image: "https://github.com/hctsai1006/taiwan-dementia-quiz-game/blob/main/images/蜜蜂.jpg" },
-            { topic: "這是動物嗎？", item: "斑馬", isCorrect: true, image: "https://github.com/hctsai1006/taiwan-dementia-quiz-game/blob/main/images/斑馬.png" },
-            { topic: "這是動物嗎？", item: "企鵝", isCorrect: true, image: "https://github.com/hctsai1006/taiwan-dementia-quiz-game/blob/main/images/企鵝.png" },
-            { topic: "這是動物嗎？", item: "小狗", isCorrect: true, image: "https://github.com/hctsai1006/taiwan-dementia-quiz-game/blob/main/images/小狗.png" },
-            { topic: "這是動物嗎？", item: "高速公路", isCorrect: false, image: "https://github.com/hctsai1006/taiwan-dementia-quiz-game/blob/main/images/高速公路.png" },
-            { topic: "這是動物嗎？", item: "斑馬線", isCorrect: false, image: "https://github.com/hctsai1006/taiwan-dementia-quiz-game/blob/main/images/斑馬線.png" },
-            { topic: "這是動物嗎？", item: "蜂蜜", isCorrect: false, image: "https://github.com/hctsai1006/taiwan-dementia-quiz-game/blob/main/images/蜂蜜.png" },
-            { topic: "這是動物嗎？", item: "密封包裝", isCorrect: false, image: "https://github.com/hctsai1006/taiwan-dementia-quiz-game/blob/main/images/密封包裝.png" },
-            { topic: "這是動物嗎？", item: "釣魚", isCorrect: false, image: "https://github.com/hctsai1006/taiwan-dementia-quiz-game/blob/main/images/釣魚.jpg" },
+            { topic: "這是動物嗎？", item: "長頸鹿", isCorrect: true, image: image_base_url + "giraffe.png" },
+            { topic: "這是動物嗎？", item: "蜜蜂", isCorrect: true, image: image_base_url + "bee.png" },
+            { topic: "這是動物嗎？", item: "斑馬", isCorrect: true, image: image_base_url + "zebra.png" },
+            { topic: "這是動物嗎？", item: "企鵝", isCorrect: true, image: image_base_url + "penguin.png" },
+            { topic: "這是動物嗎？", item: "小狗", isCorrect: true, image: image_base_url + "dog.png" },
+            { topic: "這是動物嗎？", item: "高速公路", isCorrect: false, image: image_base_url + "highway.png" },
+            { topic: "這是動物嗎？", item: "斑馬線", isCorrect: false, image: image_base_url + "crosswalk.png" },
+            { topic: "這是動物嗎？", item: "蜂蜜", isCorrect: false, image: image_base_url + "honey.png" },
+            { topic: "這是動物嗎？", item: "密封包裝", isCorrect: false, image: image_base_url + "sealed_package.png" },
+            { topic: "這是動物嗎？", item: "釣魚", isCorrect: false, image: image_base_url + "fishing.png" },
         ];
          const dingwan_set2 = [
-            { topic: "這是運動嗎？", item: "游泳", isCorrect: true, image: "https://github.com/hctsai1006/taiwan-dementia-quiz-game/blob/main/images/游泳.png" },
-            { topic: "這是運動嗎？", item: "跑步", isCorrect: true, image: "https://github.com/hctsai1006/taiwan-dementia-quiz-game/blob/main/images/跑步.png" },
-            { topic: "這是運動嗎？", item: "踢足球", isCorrect: true, image: "https://github.com/hctsai1006/taiwan-dementia-quiz-game/blob/main/images/踢足球.png" },
-            { topic: "這是運動嗎？", item: "瑜伽", isCorrect: true, image: "https://github.com/hctsai1006/taiwan-dementia-quiz-game/blob/main/images/瑜珈.png" },
-            { topic: "這是運動嗎？", item: "跳繩", isCorrect: true, image: "https.github.com/hctsai1006/taiwan-dementia-quiz-game/blob/main/images/跳繩.png" },
-            { topic: "這是運動嗎？", item: "睡覺", isCorrect: false, image: "https://github.com/hctsai1006/taiwan-dementia-quiz-game/blob/main/images/睡覺.png" },
-            { topic: "這是運動嗎？", item: "吃午餐", isCorrect: false, image: "https://github.com/hctsai1006/taiwan-dementia-quiz-game/blob/main/images/吃午餐.png" },
-            { topic: "這是運動嗎？", item: "公園", isCorrect: false, image: "https://github.com/hctsai1006/taiwan-dementia-quiz-game/blob/main/images/在公園.png" },
-            { topic: "這是運動嗎？", item: "啞鈴", isCorrect: false, image: "https://github.com/hctsai1006/taiwan-dementia-quiz-game/blob/main/images/啞鈴.png" },
-            { topic: "這是運動嗎？", item: "聊天", isCorrect: false, image: "https://github.com/hctsai1006/taiwan-dementia-quiz-game/blob/main/images/聊天.png" },
+            { topic: "這是運動嗎？", item: "游泳", isCorrect: true, image: image_base_url + "swimming.png" },
+            { topic: "這是運動嗎？", item: "跑步", isCorrect: true, image: image_base_url + "running.png" },
+            { topic: "這是運動嗎？", item: "踢足球", isCorrect: true, image: image_base_url + "playing_soccer.png" },
+            { topic: "這是運動嗎？", item: "瑜伽", isCorrect: true, image: image_base_url + "yoga.png" },
+            { topic: "這是運動嗎？", item: "跳繩", isCorrect: true, image: image_base_url + "jump_rope.png" },
+            { topic: "這是運動嗎？", item: "睡覺", isCorrect: false, image: image_base_url + "sleeping.png" },
+            { topic: "這是運動嗎？", item: "吃午餐", isCorrect: false, image: image_base_url + "eating_lunch.png" },
+            { topic: "這是運動嗎？", item: "公園", isCorrect: false, image: image_base_url + "park.png" },
+            { topic: "這是運動嗎？", item: "啞鈴", isCorrect: false, image: image_base_url + "dumbbell.png" },
+            { topic: "這是運動嗎？", item: "聊天", isCorrect: false, image: image_base_url + "chatting.png" },
         ];
 
         // 步驟 2: 按照指定順序重新排列所有題目
@@ -212,14 +215,16 @@
             imageEl.alt = slideData.item;
             imageContainerEl.classList.add('hidden');
             
-            answerEl.classList.add('hidden');
+            // **修正**：正確地設定答案的樣式，並確保它在一開始是隱藏的
+            answerEl.className = 'text-5xl md:text-7xl font-bold fade-in'; // 先設定基礎樣式
             if (slideData.isCorrect) {
                 answerEl.textContent = '正確';
-                answerEl.className = 'text-5xl md:text-7xl font-bold text-green-500 fade-in';
+                answerEl.classList.add('text-green-500');
             } else {
                 answerEl.textContent = '錯誤';
-                answerEl.className = 'text-5xl md:text-7xl font-bold text-red-500 fade-in';
+                answerEl.classList.add('text-red-500');
             }
+            answerEl.classList.add('hidden'); // 在設定完樣式後，確保它是隱藏的
             
             // 3. 重置按鈕狀態
             showAnswerBtn.classList.remove('hidden');

@@ -1,0 +1,46 @@
+<svg width="1280" height="640" viewBox="0 0 1280 640" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- 
+      GitHub 專案縮圖 (Social Preview Image)
+      - 尺寸: 1280x640 pixels
+      - 設計理念: 融合遊戲主題色、核心玩法與合作夥伴 Logo。
+    -->
+
+    <!-- 背景漸層定義 -->
+    <defs>
+        <linearGradient id="backgroundGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" style="stop-color:#f3f4f6; stop-opacity:1" /> <!-- bg-gray-100 -->
+            <stop offset="100%" style="stop-color:#e5e7eb; stop-opacity:1" /> <!-- bg-gray-200 -->
+        </linearGradient>
+    </defs>
+
+    <!-- 背景 -->
+    <rect width="1280" height="640" fill="url(#backgroundGradient)" />
+
+    <!-- 背景裝飾圖樣 (圈和叉) -->
+    <text x="150" y="450" font-family="'Noto Sans TC', sans-serif" font-size="400" font-weight="bold" fill="#22c55e" opacity="0.1" text-anchor="middle">Ｏ</text>
+    <text x="1130" y="450" font-family="'Noto Sans TC', sans-serif" font-size="400" font-weight="bold" fill="#ef4444" opacity="0.1" text-anchor="middle">Ｘ</text>
+
+    <!-- 主標題 -->
+    <text x="50%" y="280" 
+          font-family="'Noto Sans TC', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" 
+          font-size="120" 
+          font-weight="900" 
+          fill="#2563eb" 
+          text-anchor="middle">
+          【左右為難】
+    </text>
+
+    <!-- 副標題 -->
+    <text x="50%" y="400" 
+          font-family="'Noto Sans TC', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" 
+          font-size="48" 
+          font-weight="700" 
+          fill="#4b5563" 
+          text-anchor="middle">
+          專為台灣長者設計的認知反應小遊戲
+    </text>
+    
+    <!-- 聯合醫院 Logo -->
+    <image xlink:href="https://upload.wikimedia.org/wikipedia/commons/d/d5/Logo_of_Taipei_City_Hospital.svg" x="1140" y="40" height="100" width="100" />
+
+</svg>

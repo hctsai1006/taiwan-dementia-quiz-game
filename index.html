@@ -109,114 +109,119 @@
             ? "https://cdn.jsdelivr.net/gh/hctsai1006/taiwan-dementia-quiz-game@main/images/"
             : "https://raw.githubusercontent.com/hctsai1006/taiwan-dementia-quiz-game/main/images/";
 
-        // 步驟 1: 結構化所有人的題目
+        // 步驟 1: 結構化所有人的題目 (已更新題目引導語)
         // 宣妤的題目
         const xuanyu_set1 = [
-            { topic: "這個物品是紅色的嗎？", item: "草莓", isCorrect: true, image: image_base_url + "草莓.png" },
-            { topic: "這個物品是紅色的嗎？", item: "香蕉", isCorrect: false, image: image_base_url + "香蕉.png" },
-            { topic: "這個物品是紅色的嗎？", item: "番茄", isCorrect: true, image: image_base_url + "番茄.png" },
-            { topic: "這個物品是紅色的嗎？", item: "高麗菜", isCorrect: false, image: image_base_url + "高麗菜.png" },
-            { topic: "這個物品是紅色的嗎？", item: "消防車", isCorrect: true, image: image_base_url + "消防車.png" },
-            { topic: "這個物品是紅色的嗎？", item: "蘿蔔糕", isCorrect: false, image: image_base_url + "蘿蔔糕.png" },
-            { topic: "這個物品是紅色的嗎？", item: "綠豆湯", isCorrect: false, image: image_base_url + "綠豆湯.png" },
-            { topic: "這個物品是紅色的嗎？", item: "紅包", isCorrect: true, image: image_base_url + "紅包.png" },
-            { topic: "這個物品是紅色的嗎？", item: "紅燈", isCorrect: true, image: image_base_url + "紅燈.png" },
-            { topic: "這個物品是紅色的嗎？", item: "菠菜", isCorrect: false, image: image_base_url + "波菜.png" },
+            { topic: "以下何者是紅色的？是紅色的站圈，不是紅色的站叉", item: "草莓", isCorrect: true, image: image_base_url + "草莓.png" },
+            { topic: "以下何者是紅色的？是紅色的站圈，不是紅色的站叉", item: "香蕉", isCorrect: false, image: image_base_url + "香蕉.png" },
+            { topic: "以下何者是紅色的？是紅色的站圈，不是紅色的站叉", item: "番茄", isCorrect: true, image: image_base_url + "番茄.png" },
+            { topic: "以下何者是紅色的？是紅色的站圈，不是紅色的站叉", item: "高麗菜", isCorrect: false, image: image_base_url + "高麗菜.png" },
+            { topic: "以下何者是紅色的？是紅色的站圈，不是紅色的站叉", item: "消防車", isCorrect: true, image: image_base_url + "消防車.png" },
+            { topic: "以下何者是紅色的？是紅色的站圈，不是紅色的站叉", item: "蘿蔔糕", isCorrect: false, image: image_base_url + "蘿蔔糕.png" },
+            { topic: "以下何者是紅色的？是紅色的站圈，不是紅色的站叉", item: "綠豆湯", isCorrect: false, image: image_base_url + "綠豆湯.png" },
+            { topic: "以下何者是紅色的？是紅色的站圈，不是紅色的站叉", item: "紅包", isCorrect: true, image: image_base_url + "紅包.png" },
+            { topic: "以下何者是紅色的？是紅色的站圈，不是紅色的站叉", item: "紅燈", isCorrect: true, image: image_base_url + "紅燈.png" },
+            { topic: "以下何者是紅色的？是紅色的站圈，不是紅色的站叉", item: "菠菜", isCorrect: false, image: image_base_url + "波菜.png" },
         ];
         const xuanyu_set2 = [
-            { topic: "這是交通工具嗎？", item: "火車", isCorrect: true, image: image_base_url + "火車.png" },
-            { topic: "這是交通工具嗎？", item: "火爐", isCorrect: false, image: image_base_url + "火爐.png" },
-            { topic: "這是交通工具嗎？", item: "公車", isCorrect: true, image: image_base_url + "公車.png" },
-            { topic: "這是交通工具嗎？", item: "公園", isCorrect: false, image: image_base_url + "公園.png" },
-            { topic: "這是交通工具嗎？", item: "椅子", isCorrect: false, image: image_base_url + "椅子.png" },
-            { topic: "這是交通工具嗎？", item: "飛機", isCorrect: true, image: image_base_url + "飛機.png" },
-            { topic: "這是交通工具嗎？", item: "雲霄飛車", isCorrect: false, image: image_base_url + "雲霄飛車.png" },
-            { topic: "這是交通工具嗎？", item: "捷運", isCorrect: true, image: image_base_url + "捷運.png" },
-            { topic: "這是交通工具嗎？", item: "計程車", isCorrect: true, image: image_base_url + "計程車.png" },
-            { topic: "這是交通工具嗎？", item: "吹風機", isCorrect: false, image: image_base_url + "吹風機.png" },
+            { topic: "以下哪個是交通工具？是交通工具的站圈，不是的站叉", item: "火車", isCorrect: true, image: image_base_url + "火車.png" },
+            { topic: "以下哪個是交通工具？是交通工具的站圈，不是的站叉", item: "火爐", isCorrect: false, image: image_base_url + "火爐.png" },
+            { topic: "以下哪個是交通工具？是交通工具的站圈，不是的站叉", item: "公車", isCorrect: true, image: image_base_url + "公車.png" },
+            { topic: "以下哪個是交通工具？是交通工具的站圈，不是的站叉", item: "公園", isCorrect: false, image: image_base_url + "公園.png" },
+            { topic: "以下哪個是交通工具？是交通工具的站圈，不是的站叉", item: "椅子", isCorrect: false, image: image_base_url + "椅子.png" },
+            { topic: "以下哪個是交通工具？是交通工具的站圈，不是的站叉", item: "飛機", isCorrect: true, image: image_base_url + "飛機.png" },
+            { topic: "以下哪個是交通工具？是交通工具的站圈，不是的站叉", item: "雲霄飛車", isCorrect: false, image: image_base_url + "雲霄飛車.png" },
+            { topic: "以下哪個是交通工具？是交通工具的站圈，不是的站叉", item: "捷運", isCorrect: true, image: image_base_url + "捷運.png" },
+            { topic: "以下哪個是交通工具？是交通工具的站圈，不是的站叉", item: "計程車", isCorrect: true, image: image_base_url + "計程車.png" },
+            { topic: "以下哪個是交通工具？是交通工具的站圈，不是的站叉", item: "吹風機", isCorrect: false, image: image_base_url + "吹風機.png" },
         ];
         // 秀吉的題目
         const xiuji_set1 = [
-            { topic: "這種動物會飛嗎？", item: "麻雀", isCorrect: true, image: image_base_url + "麻雀.png" },
-            { topic: "這種動物會飛嗎？", item: "貓咪", isCorrect: false, image: image_base_url + "貓咪.png" },
-            { topic: "這種動物會飛嗎？", item: "蝴蝶", isCorrect: true, image: image_base_url + "蝴蝶.png" },
-            { topic: "這種動物會飛嗎？", item: "狗狗", isCorrect: false, image: image_base_url + "小狗.png" },
-            { topic: "這種動物會飛嗎？", item: "老鷹", isCorrect: true, image: image_base_url + "老鷹.png" },
-            { topic: "這種動物會飛嗎？", item: "金魚", isCorrect: false, image: image_base_url + "金魚.png" },
-            { topic: "這種動物會飛嗎？", item: "蚊子", isCorrect: true, image: image_base_url + "蚊子.jpg" },
-            { topic: "這種動物會飛嗎？", item: "豬", isCorrect: false, image: image_base_url + "豬.jpg" },
-            { topic: "這種動物會飛嗎？", item: "鴿子", isCorrect: true, image: image_base_url + "鴿子.png" },
-            { topic: "這種動物會飛嗎？", item: "烏龜", isCorrect: false, image: image_base_url + "烏龜.jpg" },
+            { topic: "以下這個動物，會飛的請到Ｏ（圈圈），不會飛的請到Ｘ（叉叉）。", item: "麻雀", isCorrect: true, image: image_base_url + "麻雀.png" },
+            { topic: "以下這個動物，會飛的請到Ｏ（圈圈），不會飛的請到Ｘ（叉叉）。", item: "貓咪", isCorrect: false, image: image_base_url + "貓咪.png" },
+            { topic: "以下這個動物，會飛的請到Ｏ（圈圈），不會飛的請到Ｘ（叉叉）。", item: "蝴蝶", isCorrect: true, image: image_base_url + "蝴蝶.png" },
+            { topic: "以下這個動物，會飛的請到Ｏ（圈圈），不會飛的請到Ｘ（叉叉）。", item: "狗狗", isCorrect: false, image: image_base_url + "小狗.png" },
+            { topic: "以下這個動物，會飛的請到Ｏ（圈圈），不會飛的請到Ｘ（叉叉）。", item: "老鷹", isCorrect: true, image: image_base_url + "老鷹.png" },
+            { topic: "以下這個動物，會飛的請到Ｏ（圈圈），不會飛的請到Ｘ（叉叉）。", item: "金魚", isCorrect: false, image: image_base_url + "金魚.png" },
+            { topic: "以下這個動物，會飛的請到Ｏ（圈圈），不會飛的請到Ｘ（叉叉）。", item: "蚊子", isCorrect: true, image: image_base_url + "蚊子.jpg" },
+            { topic: "以下這個動物，會飛的請到Ｏ（圈圈），不會飛的請到Ｘ（叉叉）。", item: "豬", isCorrect: false, image: image_base_url + "豬.jpg" },
+            { topic: "以下這個動物，會飛的請到Ｏ（圈圈），不會飛的請到Ｘ（叉叉）。", item: "鴿子", isCorrect: true, image: image_base_url + "鴿子.png" },
+            { topic: "以下這個動物，會飛的請到Ｏ（圈圈），不會飛的請到Ｘ（叉叉）。", item: "烏龜", isCorrect: false, image: image_base_url + "烏龜.jpg" },
         ];
         const xiuji_set2 = [
-            { topic: "這個東西可以吃嗎？", item: "饅頭", isCorrect: true, image: image_base_url + "包子.png" },
-            { topic: "這個東西可以吃嗎？", item: "肥皂", isCorrect: false, image: image_base_url + "肥皂.png" },
-            { topic: "這個東西可以吃嗎？", item: "蘋果", isCorrect: true, image: image_base_url + "蘋果.png" },
-            { topic: "這個東西可以吃嗎？", item: "牙刷", isCorrect: false, image: image_base_url + "牙刷.png" },
-            { topic: "這個東西可以吃嗎？", item: "滷肉飯", isCorrect: true, image: image_base_url + "滷肉飯.png" },
-            { topic: "這個東西可以吃嗎？", item: "碗", isCorrect: false, image: image_base_url + "碗.png" },
-            { topic: "這個東西可以吃嗎？", item: "粽子", isCorrect: true, image: image_base_url + "粽子.png" },
-            { topic: "這個東西可以吃嗎？", item: "雞毛撢子", isCorrect: false, image: image_base_url + "雞毛撢子.png" },
-            { topic: "這個東西可以吃嗎？", item: "綠豆湯", isCorrect: true, image: image_base_url + "綠豆湯.png" },
-            { topic: "這個東西可以吃嗎？", item: "拖鞋", isCorrect: false, image: image_base_url + "藍白拖.jpg" },
+            { topic: "以下這個東西，可以吃的請到Ｏ（圈圈），不可以吃的請到Ｘ（叉叉）。", item: "饅頭", isCorrect: true, image: image_base_url + "包子.png" },
+            { topic: "以下這個東西，可以吃的請到Ｏ（圈圈），不可以吃的請到Ｘ（叉叉）。", item: "肥皂", isCorrect: false, image: image_base_url + "肥皂.png" },
+            { topic: "以下這個東西，可以吃的請到Ｏ（圈圈），不可以吃的請到Ｘ（叉叉）。", item: "蘋果", isCorrect: true, image: image_base_url + "蘋果.png" },
+            { topic: "以下這個東西，可以吃的請到Ｏ（圈圈），不可以吃的請到Ｘ（叉叉）。", item: "牙刷", isCorrect: false, image: image_base_url + "牙刷.png" },
+            { topic: "以下這個東西，可以吃的請到Ｏ（圈圈），不可以吃的請到Ｘ（叉叉）。", item: "滷肉飯", isCorrect: true, image: image_base_url + "滷肉飯.png" },
+            { topic: "以下這個東西，可以吃的請到Ｏ（圈圈），不可以吃的請到Ｘ（叉叉）。", item: "碗", isCorrect: false, image: image_base_url + "碗.png" },
+            { topic: "以下這個東西，可以吃的請到Ｏ（圈圈），不可以吃的請到Ｘ（叉叉）。", item: "粽子", isCorrect: true, image: image_base_url + "粽子.png" },
+            { topic: "以下這個東西，可以吃的請到Ｏ（圈圈），不可以吃的請到Ｘ（叉叉）。", item: "雞毛撢子", isCorrect: false, image: image_base_url + "雞毛撢子.png" },
+            { topic: "以下這個東西，可以吃的請到Ｏ（圈圈），不可以吃的請到Ｘ（叉叉）。", item: "綠豆湯", isCorrect: true, image: image_base_url + "綠豆湯.png" },
+            { topic: "以下這個東西，可以吃的請到Ｏ（圈圈），不可以吃的請到Ｘ（叉叉）。", item: "拖鞋", isCorrect: false, image: image_base_url + "藍白拖.jpg" },
         ];
         // 宜璇的題目
         const yixuan_set1 = [
-            { topic: "這是廚房用品嗎？", item: "鍋子", isCorrect: true, image: image_base_url + "鍋子.png" },
-            { topic: "這是廚房用品嗎？", item: "電視", isCorrect: false, image: image_base_url + "電視.png" },
-            { topic: "這是廚房用品嗎？", item: "電鍋", isCorrect: true, image: image_base_url + "電鍋.png" },
-            { topic: "這是廚房用品嗎？", item: "鍋鏟", isCorrect: true, image: image_base_url + "鍋鏟.png" },
-            { topic: "這是廚房用品嗎？", item: "烘碗機", isCorrect: true, image: image_base_url + "烘碗機.png" },
-            { topic: "這是廚房用品嗎？", item: "除濕機", isCorrect: false, image: image_base_url + "除濕機.png" },
-            { topic: "這是廚房用品嗎？", item: "菜刀", isCorrect: true, image: image_base_url + "菜刀.png" },
-            { topic: "這是廚房用品嗎？", item: "衣架", isCorrect: false, image: image_base_url + "衣架.png" },
-            { topic: "這是廚房用品嗎？", item: "電風扇", isCorrect: false, image: image_base_url + "電風扇.png" },
-            { topic: "這是廚房用品嗎？", item: "瓦斯爐", isCorrect: true, image: image_base_url + "瓦斯爐.png" },
+            { topic: "以下何者是廚房用品？會在廚房看到的站圈，不會在廚房看到的站叉", item: "鍋子", isCorrect: true, image: image_base_url + "鍋子.png" },
+            { topic: "以下何者是廚房用品？會在廚房看到的站圈，不會在廚房看到的站叉", item: "電視", isCorrect: false, image: image_base_url + "電視.png" },
+            { topic: "以下何者是廚房用品？會在廚房看到的站圈，不會在廚房看到的站叉", item: "電鍋", isCorrect: true, image: image_base_url + "電鍋.png" },
+            { topic: "以下何者是廚房用品？會在廚房看到的站圈，不會在廚房看到的站叉", item: "鍋鏟", isCorrect: true, image: image_base_url + "鍋鏟.png" },
+            { topic: "以下何者是廚房用品？會在廚房看到的站圈，不會在廚房看到的站叉", item: "烘碗機", isCorrect: true, image: image_base_url + "烘碗機.png" },
+            { topic: "以下何者是廚房用品？會在廚房看到的站圈，不會在廚房看到的站叉", item: "除濕機", isCorrect: false, image: image_base_url + "除濕機.png" },
+            { topic: "以下何者是廚房用品？會在廚房看到的站圈，不會在廚房看到的站叉", item: "菜刀", isCorrect: true, image: image_base_url + "菜刀.png" },
+            { topic: "以下何者是廚房用品？會在廚房看到的站圈，不會在廚房看到的站叉", item: "衣架", isCorrect: false, image: image_base_url + "衣架.png" },
+            { topic: "以下何者是廚房用品？會在廚房看到的站圈，不會在廚房看到的站叉", item: "電風扇", isCorrect: false, image: image_base_url + "電風扇.png" },
+            { topic: "以下何者是廚房用品？會在廚房看到的站圈，不會在廚房看到的站叉", item: "瓦斯爐", isCorrect: true, image: image_base_url + "瓦斯爐.png" },
         ];
         const yixuan_set2 = [
-            { topic: "這是真的花嗎？", item: "向日葵", isCorrect: true, image: image_base_url + "向日葵.png" },
-            { topic: "這是真的花嗎？", item: "屁股開花", isCorrect: false, image: image_base_url + "屁股開花.png" },
-            { topic: "這是真的花嗎？", item: "玫瑰花", isCorrect: true, image: image_base_url + "玫瑰花.png" },
-            { topic: "這是真的花嗎？", item: "牽牛花", isCorrect: true, image: image_base_url + "牽牛花.png" },
-            { topic: "這是真的花嗎？", item: "百合花", isCorrect: true, image: image_base_url + "百合花.png" },
-            { topic: "這是真的花嗎？", item: "有錢花", isCorrect: false, image: image_base_url + "有錢花.png" },
-            { topic: "這是真的花嗎？", item: "鬱金香", isCorrect: true, image: image_base_url + "鬱金香.png" },
-            { topic: "這是真的花嗎？", item: "老花", isCorrect: false, image: image_base_url + "老花.png" },
-            { topic: "這是真的花嗎？", item: "五月花", isCorrect: false, image: image_base_url + "五月花.jpg" },
-            { topic: "這是真的花嗎？", item: "繡球花", isCorrect: true, image: image_base_url + "繡球花.png" },
+            { topic: "以下何者是真的花？是真的花站圈，不是真的花站叉", item: "向日葵", isCorrect: true, image: image_base_url + "向日葵.png" },
+            { topic: "以下何者是真的花？是真的花站圈，不是真的花站叉", item: "屁股開花", isCorrect: false, image: image_base_url + "屁股開花.png" },
+            { topic: "以下何者是真的花？是真的花站圈，不是真的花站叉", item: "玫瑰花", isCorrect: true, image: image_base_url + "玫瑰花.png" },
+            { topic: "以下何者是真的花？是真的花站圈，不是真的花站叉", item: "牽牛花", isCorrect: true, image: image_base_url + "牽牛花.png" },
+            { topic: "以下何者是真的花？是真的花站圈，不是真的花站叉", item: "百合花", isCorrect: true, image: image_base_url + "百合花.png" },
+            { topic: "以下何者是真的花？是真的花站圈，不是真的花站叉", item: "有錢花", isCorrect: false, image: image_base_url + "有錢花.png" },
+            { topic: "以下何者是真的花？是真的花站圈，不是真的花站叉", item: "鬱金香", isCorrect: true, image: image_base_url + "鬱金香.png" },
+            { topic: "以下何者是真的花？是真的花站圈，不是真的花站叉", item: "老花", isCorrect: false, image: image_base_url + "老花.png" },
+            { topic: "以下何者是真的花？是真的花站圈，不是真的花站叉", item: "五月花", isCorrect: false, image: image_base_url + "五月花.jpg" },
+            { topic: "以下何者是真的花？是真的花站圈，不是真的花站叉", item: "繡球花", isCorrect: true, image: image_base_url + "繡球花.png" },
         ];
         // 定萬的題目
         const dingwan_set1 = [
-            { topic: "這是動物嗎？", item: "長頸鹿", isCorrect: true, image: image_base_url + "長頸鹿.png" },
-            { topic: "這是動物嗎？", item: "蜜蜂", isCorrect: true, image: image_base_url + "蜜蜂.jpg" },
-            { topic: "這是動物嗎？", item: "斑馬", isCorrect: true, image: image_base_url + "斑馬.png" },
-            { topic: "這是動物嗎？", item: "企鵝", isCorrect: true, image: image_base_url + "企鵝.png" },
-            { topic: "這是動物嗎？", item: "小狗", isCorrect: true, image: image_base_url + "小狗.png" },
-            { topic: "這是動物嗎？", item: "高速公路", isCorrect: false, image: image_base_url + "高速公路.png" },
-            { topic: "這是動物嗎？", item: "斑馬線", isCorrect: false, image: image_base_url + "斑馬線.png" },
-            { topic: "這是動物嗎？", item: "蜂蜜", isCorrect: false, image: image_base_url + "蜂蜜.png" },
-            { topic: "這是動物嗎？", item: "密封包裝", isCorrect: false, image: image_base_url + "密封包裝.png" },
-            { topic: "這是動物嗎？", item: "釣魚", isCorrect: false, image: image_base_url + "釣魚.jpg" },
+            { topic: "請問下列何者是動物？是動物的站圈，不是的站叉。", item: "長頸鹿", isCorrect: true, image: image_base_url + "長頸鹿.png" },
+            { topic: "請問下列何者是動物？是動物的站圈，不是的站叉。", item: "蜜蜂", isCorrect: true, image: image_base_url + "蜜蜂.jpg" },
+            { topic: "請問下列何者是動物？是動物的站圈，不是的站叉。", item: "斑馬", isCorrect: true, image: image_base_url + "斑馬.png" },
+            { topic: "請問下列何者是動物？是動物的站圈，不是的站叉。", item: "企鵝", isCorrect: true, image: image_base_url + "企鵝.png" },
+            { topic: "請問下列何者是動物？是動物的站圈，不是的站叉。", item: "小狗", isCorrect: true, image: image_base_url + "小狗.png" },
+            { topic: "請問下列何者是動物？是動物的站圈，不是的站叉。", item: "高速公路", isCorrect: false, image: image_base_url + "高速公路.png" },
+            { topic: "請問下列何者是動物？是動物的站圈，不是的站叉。", item: "斑馬線", isCorrect: false, image: image_base_url + "斑馬線.png" },
+            { topic: "請問下列何者是動物？是動物的站圈，不是的站叉。", item: "蜂蜜", isCorrect: false, image: image_base_url + "蜂蜜.png" },
+            { topic: "請問下列何者是動物？是動物的站圈，不是的站叉。", item: "密封包裝", isCorrect: false, image: image_base_url + "密封包裝.png" },
+            { topic: "請問下列何者是動物？是動物的站圈，不是的站叉。", item: "釣魚", isCorrect: false, image: image_base_url + "釣魚.jpg" },
         ];
          const dingwan_set2 = [
-            { topic: "這是運動嗎？", item: "游泳", isCorrect: true, image: image_base_url + "游泳.png" },
-            { topic: "這是運動嗎？", item: "跑步", isCorrect: true, image: image_base_url + "跑步.png" },
-            { topic: "這是運動嗎？", item: "踢足球", isCorrect: true, image: image_base_url + "踢足球.png" },
-            { topic: "這是運動嗎？", item: "瑜伽", isCorrect: true, image: image_base_url + "瑜珈.png" },
-            { topic: "這是運動嗎？", item: "跳繩", isCorrect: true, image: image_base_url + "跳繩.png" },
-            { topic: "這是運動嗎？", item: "睡覺", isCorrect: false, image: image_base_url + "睡覺.png" },
-            { topic: "這是運動嗎？", item: "吃午餐", isCorrect: false, image: image_base_url + "吃午餐.png" },
-            { topic: "這是運動嗎？", item: "公園", isCorrect: false, image: image_base_url + "公園.png" },
-            { topic: "這是運動嗎？", item: "啞鈴", isCorrect: false, image: image_base_url + "啞鈴.png" },
-            { topic: "這是運動嗎？", item: "聊天", isCorrect: false, image: image_base_url + "聊天.png" },
+            { topic: "下列何者是運動？是運動的站圈，不是的站叉。", item: "游泳", isCorrect: true, image: image_base_url + "游泳.png" },
+            { topic: "下列何者是運動？是運動的站圈，不是的站叉。", item: "跑步", isCorrect: true, image: image_base_url + "跑步.png" },
+            { topic: "下列何者是運動？是運動的站圈，不是的站叉。", item: "踢足球", isCorrect: true, image: image_base_url + "踢足球.png" },
+            { topic: "下列何者是運動？是運動的站圈，不是的站叉。", item: "瑜伽", isCorrect: true, image: image_base_url + "瑜珈.png" },
+            { topic: "下列何者是運動？是運動的站圈，不是的站叉。", item: "跳繩", isCorrect: true, image: image_base_url + "跳繩.png" },
+            { topic: "下列何者是運動？是運動的站圈，不是的站叉。", item: "睡覺", isCorrect: false, image: image_base_url + "睡覺.png" },
+            { topic: "下列何者是運動？是運動的站圈，不是的站叉。", item: "吃午餐", isCorrect: false, image: image_base_url + "吃午餐.png" },
+            { topic: "下列何者是運動？是運動的站圈，不是的站叉。", item: "公園", isCorrect: false, image: image_base_url + "公園.png" },
+            { topic: "下列何者是運動？是運動的站圈，不是的站叉。", item: "啞鈴", isCorrect: false, image: image_base_url + "啞鈴.png" },
+            { topic: "下列何者是運動？是運動的站圈，不是的站叉。", item: "聊天", isCorrect: false, image: image_base_url + "聊天.png" },
         ];
 
-        // 步驟 2: 按照指定順序重新排列所有題目
-        const slides = [];
-        const all_sets_part1 = [xuanyu_set1, xiuji_set1, yixuan_set1, dingwan_set1];
-        const all_sets_part2 = [xuanyu_set2, xiuji_set2, yixuan_set2, dingwan_set2];
-        for (let i = 0; i < 10; i++) { all_sets_part1.forEach(set => { if (set[i]) slides.push(set[i]); }); }
-        for (let i = 0; i < 10; i++) { all_sets_part2.forEach(set => { if (set[i]) slides.push(set[i]); }); }
+        // 步驟 2: 【已修改】按照新的指定順序重新排列所有題目
+        const slides = [
+            ...xuanyu_set1,
+            ...xiuji_set1,
+            ...yixuan_set1,
+            ...dingwan_set1,
+            ...xuanyu_set2,
+            ...xiuji_set2,
+            ...yixuan_set2,
+            ...dingwan_set2
+        ];
 
         // 步驟 3: 獲取需要操作的 HTML 元素
         const topicEl = document.getElementById('topic');
@@ -239,6 +244,12 @@
         function preloadImages() {
             return new Promise((resolve) => {
                 const totalImages = slides.length;
+                if (totalImages === 0) { // 如果沒有圖片，直接完成
+                    loadingOverlay.style.display = 'none';
+                    gameContainer.style.display = 'flex';
+                    resolve();
+                    return;
+                }
                 const imageCache = [];
 
                 slides.forEach((slide, index) => {
@@ -293,10 +304,10 @@
             // 正確地設定答案的樣式，並確保它在一開始是隱藏的
             answerEl.className = 'text-5xl md:text-7xl font-bold fade-in'; // 先設定基礎樣式
             if (slideData.isCorrect) {
-                answerEl.textContent = '正確';
+                answerEl.textContent = 'Ｏ';
                 answerEl.classList.add('text-green-500');
             } else {
-                answerEl.textContent = '錯誤';
+                answerEl.textContent = 'Ｘ';
                 answerEl.classList.add('text-red-500');
             }
             answerEl.classList.add('hidden'); // 在設定完樣式後，確保它是隱藏的
@@ -338,22 +349,21 @@
 
         // 鍵盤控制支援
         document.addEventListener('keydown', (e) => {
+            // 防止在輸入框等地方觸發
+            if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
+            
             switch(e.key) {
                 case 'ArrowLeft':
-                    if (currentSlide > 0) {
-                        currentSlide--;
-                        renderSlide();
-                    }
+                    prevBtn.click();
                     break;
                 case 'ArrowRight':
-                    if (currentSlide < slides.length - 1) {
-                        currentSlide++;
-                        renderSlide();
-                    }
+                    nextBtn.click();
                     break;
                 case ' ':
                 case 'Enter':
+                    // 如果顯示答案按鈕可見，則觸發它
                     if (!showAnswerBtn.classList.contains('hidden')) {
+                        e.preventDefault(); // 防止空白鍵滾動頁面
                         showAnswerBtn.click();
                     }
                     break;
@@ -362,7 +372,7 @@
 
         // 初始載入
         preloadImages().then(() => {
-            renderSlide();   // 顯示第一張投影片
+            renderSlide();    // 顯示第一張投影片
         });
     </script>
 </body>

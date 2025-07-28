@@ -15,7 +15,7 @@
         }
         /* 確保內容區域在垂直方向上能填滿空間 */
         .content-container {
-            min-height: 450px; /* 增加最小高度以容納更大的字體 */
+            min-height: 450px; /* 維持足夠高度 */
         }
     </style>
 </head>
@@ -27,9 +27,11 @@
         <!-- 投影片內容區域 -->
         <div id="slide-content" class="content-container flex-grow flex flex-col items-center justify-center mb-6">
             <!-- 題目類別 -->
-            <h1 id="topic" class="text-4xl md:text-5xl font-bold text-gray-800 mb-6"></h1>
-            <!-- 題目項目 Emoji -->
-            <div id="emoji" class="text-8xl md:text-9xl mb-4"></div>
+            <h1 id="topic" class="text-4xl md:text-5xl font-bold text-gray-800 mb-4"></h1>
+            <!-- 題目圖片 -->
+            <div class="w-64 h-64 md:w-80 md:h-80 mb-4 flex items-center justify-center">
+                <img id="item-image" src="" alt="題目圖片" class="max-w-full max-h-full object-contain rounded-lg">
+            </div>
             <!-- 題目項目文字 -->
             <h2 id="item" class="text-7xl md:text-9xl font-extrabold text-blue-600 mb-8"></h2>
             <!-- 正確答案提示 (給主持人看)，預設隱藏 -->
@@ -56,73 +58,74 @@
     </div>
 
     <script>
-        // 步驟 1: 將所有題目資料結構化，並優化題目問法
+        // 步驟 1: 將所有題目資料結構化，並使用真實圖片
+        const image_base_url = "https://raw.githubusercontent.com/hctsai1006/taiwan-dementia-quiz-game/main/images/";
         const slides = [
             // 第一組題目：紅色
-            { topic: "這個物品是紅色的嗎？", item: "草莓", isCorrect: true, emoji: "🍓" },
-            { topic: "這個物品是紅色的嗎？", item: "香蕉", isCorrect: false, emoji: "🍌" },
-            { topic: "這個物品是紅色的嗎？", item: "番茄", isCorrect: true, emoji: "🍅" },
-            { topic: "這個物品是紅色的嗎？", item: "高麗菜", isCorrect: false, emoji: "🥬" },
-            { topic: "這個物品是紅色的嗎？", item: "消防車", isCorrect: true, emoji: "🚒" },
-            { topic: "這個物品是紅色的嗎？", item: "蘿蔔糕", isCorrect: false, emoji: "🧇" },
-            { topic: "這個物品是紅色的嗎？", item: "綠豆湯", isCorrect: false, emoji: "🥣" },
-            { topic: "這個物品是紅色的嗎？", item: "紅包", isCorrect: true, emoji: "🧧" },
-            { topic: "這個物品是紅色的嗎？", item: "紅燈", isCorrect: true, emoji: "🔴" },
-            { topic: "這個物品是紅色的嗎？", item: "菠菜", isCorrect: false, emoji: "🌿" },
+            { topic: "這個物品是紅色的嗎？", item: "草莓", isCorrect: true, image: image_base_url + "strawberry.png" },
+            { topic: "這個物品是紅色的嗎？", item: "香蕉", isCorrect: false, image: image_base_url + "banana.png" },
+            { topic: "這個物品是紅色的嗎？", item: "番茄", isCorrect: true, image: image_base_url + "tomato.png" },
+            { topic: "這個物品是紅色的嗎？", item: "高麗菜", isCorrect: false, image: image_base_url + "cabbage.png" },
+            { topic: "這個物品是紅色的嗎？", item: "消防車", isCorrect: true, image: image_base_url + "fire_truck.png" },
+            { topic: "這個物品是紅色的嗎？", item: "蘿蔔糕", isCorrect: false, image: image_base_url + "turnip_cake.png" },
+            { topic: "這個物品是紅色的嗎？", item: "綠豆湯", isCorrect: false, image: image_base_url + "mung_bean_soup.png" },
+            { topic: "這個物品是紅色的嗎？", item: "紅包", isCorrect: true, image: image_base_url + "red_envelope.png" },
+            { topic: "這個物品是紅色的嗎？", item: "紅燈", isCorrect: true, image: image_base_url + "red_light.png" },
+            { topic: "這個物品是紅色的嗎？", item: "菠菜", isCorrect: false, image: image_base_url + "spinach.png" },
             
             // 第二組題目：交通工具
-            { topic: "這是交通工具嗎？", item: "火車", isCorrect: true, emoji: "🚂" },
-            { topic: "這是交通工具嗎？", item: "火爐", isCorrect: false, emoji: "🔥" },
-            { topic: "這是交通工具嗎？", item: "公車", isCorrect: true, emoji: "🚌" },
-            { topic: "這是交通工具嗎？", item: "公園", isCorrect: false, emoji: "🏞️" },
-            { topic: "這是交通工具嗎？", item: "椅子", isCorrect: false, emoji: "🪑" },
-            { topic: "這是交通工具嗎？", item: "飛機", isCorrect: true, emoji: "✈️" },
-            { topic: "這是交通工具嗎？", item: "熱氣球", isCorrect: false, emoji: "🎈" }, // 根據使用者要求修正為 false
-            { topic: "這是交通工具嗎？", item: "捷運", isCorrect: true, emoji: "🚇" },
-            { topic: "這是交通工具嗎？", item: "計程車", isCorrect: true, emoji: "🚕" },
-            { topic: "這是交通工具嗎？", item: "吹風機", isCorrect: false, emoji: "💨" },
+            { topic: "這是交通工具嗎？", item: "火車", isCorrect: true, image: image_base_url + "train.png" },
+            { topic: "這是交通工具嗎？", item: "火爐", isCorrect: false, image: image_base_url + "stove.png" },
+            { topic: "這是交通工具嗎？", item: "公車", isCorrect: true, image: image_base_url + "bus.png" },
+            { topic: "這是交通工具嗎？", item: "公園", isCorrect: false, image: image_base_url + "park.png" },
+            { topic: "這是交通工具嗎？", item: "椅子", isCorrect: false, image: image_base_url + "chair.png" },
+            { topic: "這是交通工具嗎？", item: "飛機", isCorrect: true, image: image_base_url + "airplane.png" },
+            { topic: "這是交通工具嗎？", item: "熱氣球", isCorrect: false, image: image_base_url + "hot_air_balloon.png" },
+            { topic: "這是交通工具嗎？", item: "捷運", isCorrect: true, image: image_base_url + "mrt.png" },
+            { topic: "這是交通工具嗎？", item: "計程車", isCorrect: true, image: image_base_url + "taxi.png" },
+            { topic: "這是交通工具嗎？", item: "吹風機", isCorrect: false, image: image_base_url + "hair_dryer.png" },
 
             // 第三組題目：可以吃的
-            { topic: "這個東西可以吃嗎？", item: "饅頭", isCorrect: true, emoji: "⚪" },
-            { topic: "這個東西可以吃嗎？", item: "肥皂", isCorrect: false, emoji: "🧼" },
-            { topic: "這個東西可以吃嗎？", item: "蘋果", isCorrect: true, emoji: "🍎" },
-            { topic: "這個東西可以吃嗎？", item: "牙刷", isCorrect: false, emoji: "🪥" },
-            { topic: "這個東西可以吃嗎？", item: "滷肉飯", isCorrect: true, emoji: "🍚" },
-            { topic: "這個東西可以吃嗎？", item: "碗", isCorrect: false, emoji: "🥣" },
-            { topic: "這個東西可以吃嗎？", item: "粽子", isCorrect: true, emoji: "🍙" },
-            { topic: "這個東西可以吃嗎？", item: "雞毛撢子", isCorrect: false, emoji: "🧹" },
-            { topic: "這個東西可以吃嗎？", item: "綠豆湯", isCorrect: true, emoji: "🥣" },
-            { topic: "這個東西可以吃嗎？", item: "拖鞋", isCorrect: false, emoji: "🩴" },
+            { topic: "這個東西可以吃嗎？", item: "饅頭", isCorrect: true, image: image_base_url + "steamed_bun.png" },
+            { topic: "這個東西可以吃嗎？", item: "肥皂", isCorrect: false, image: image_base_url + "soap.png" },
+            { topic: "這個東西可以吃嗎？", item: "蘋果", isCorrect: true, image: image_base_url + "apple.png" },
+            { topic: "這個東西可以吃嗎？", item: "牙刷", isCorrect: false, image: image_base_url + "toothbrush.png" },
+            { topic: "這個東西可以吃嗎？", item: "滷肉飯", isCorrect: true, image: image_base_url + "braised_pork_rice.png" },
+            { topic: "這個東西可以吃嗎？", item: "碗", isCorrect: false, image: image_base_url + "bowl.png" },
+            { topic: "這個東西可以吃嗎？", item: "粽子", isCorrect: true, image: image_base_url + "zongzi.png" },
+            { topic: "這個東西可以吃嗎？", item: "雞毛撢子", isCorrect: false, image: image_base_url + "feather_duster.png" },
+            { topic: "這個東西可以吃嗎？", item: "綠豆湯", isCorrect: true, image: image_base_url + "mung_bean_soup.png" },
+            { topic: "這個東西可以吃嗎？", item: "拖鞋", isCorrect: false, image: image_base_url + "slippers.png" },
             
             // 第四組題目：廚房用品
-            { topic: "這是廚房用品嗎？", item: "鍋子", isCorrect: true, emoji: "🍳" },
-            { topic: "這是廚房用品嗎？", item: "電視", isCorrect: false, emoji: "📺" },
-            { topic: "這是廚房用品嗎？", item: "電鍋", isCorrect: true, emoji: "🍚" },
-            { topic: "這是廚房用品嗎？", item: "鍋鏟", isCorrect: true, emoji: "🍳" },
-            { topic: "這是廚房用品嗎？", item: "烘碗機", isCorrect: true, emoji: "�️" },
-            { topic: "這是廚房用品嗎？", item: "除濕機", isCorrect: false, emoji: "💧" },
-            { topic: "這是廚房用品嗎？", item: "菜刀", isCorrect: true, emoji: "🔪" },
-            { topic: "這是廚房用品嗎？", item: "衣架", isCorrect: false, emoji: "👚" },
-            { topic: "這是廚房用品嗎？", item: "電風扇", isCorrect: false, emoji: "🌀" },
-            { topic: "這是廚房用品嗎？", item: "瓦斯爐", isCorrect: true, emoji: "🔥" },
+            { topic: "這是廚房用品嗎？", item: "鍋子", isCorrect: true, image: image_base_url + "pot.png" },
+            { topic: "這是廚房用品嗎？", item: "電視", isCorrect: false, image: image_base_url + "tv.png" },
+            { topic: "這是廚房用品嗎？", item: "電鍋", isCorrect: true, image: image_base_url + "rice_cooker.png" },
+            { topic: "這是廚房用品嗎？", item: "鍋鏟", isCorrect: true, image: image_base_url + "spatula.png" },
+            { topic: "這是廚房用品嗎？", item: "烘碗機", isCorrect: true, image: image_base_url + "dish_dryer.png" },
+            { topic: "這是廚房用品嗎？", item: "除濕機", isCorrect: false, image: image_base_url + "dehumidifier.png" },
+            { topic: "這是廚房用品嗎？", item: "菜刀", isCorrect: true, image: image_base_url + "kitchen_knife.png" },
+            { topic: "這是廚房用品嗎？", item: "衣架", isCorrect: false, image: image_base_url + "hanger.png" },
+            { topic: "這是廚房用品嗎？", item: "電風扇", isCorrect: false, image: image_base_url + "fan.png" },
+            { topic: "這是廚房用品嗎？", item: "瓦斯爐", isCorrect: true, image: image_base_url + "gas_stove.png" },
 
             // 第五組題目：真的花
-            { topic: "這是真的花嗎？", item: "向日葵", isCorrect: true, emoji: "🌻" },
-            { topic: "這是真的花嗎？", item: "屁股開花", isCorrect: false, emoji: "🍑" },
-            { topic: "這是真的花嗎？", item: "玫瑰花", isCorrect: true, emoji: "🌹" },
-            { topic: "這是真的花嗎？", item: "牽牛花", isCorrect: true, emoji: "🌸" },
-            { topic: "這是真的花嗎？", item: "百合花", isCorrect: true, emoji: "💮" },
-            { topic: "這是真的花嗎？", item: "有錢花", isCorrect: false, emoji: "💸" },
-            { topic: "這是真的花嗎？", item: "鬱金香", isCorrect: true, emoji: "🌷" },
-            { topic: "這是真的花嗎？", item: "老花", isCorrect: false, emoji: "👓" },
-            { topic: "這是真的花嗎？", item: "五月花", isCorrect: false, emoji: "🤧" },
-            { topic: "這是真的花嗎？", item: "繡球花", isCorrect: true, emoji: "💐" },
+            { topic: "這是真的花嗎？", item: "向日葵", isCorrect: true, image: image_base_url + "sunflower.png" },
+            { topic: "這是真的花嗎？", item: "屁股開花", isCorrect: false, image: image_base_url + "fall_down.png" },
+            { topic: "這是真的花嗎？", item: "玫瑰花", isCorrect: true, image: image_base_url + "rose.png" },
+            { topic: "這是真的花嗎？", item: "牽牛花", isCorrect: true, image: image_base_url + "morning_glory.png" },
+            { topic: "這是真的花嗎？", item: "百合花", isCorrect: true, image: image_base_url + "lily.png" },
+            { topic: "這是真的花嗎？", item: "有錢花", isCorrect: false, image: image_base_url + "spending_money.png" },
+            { topic: "這是真的花嗎？", item: "鬱金香", isCorrect: true, image: image_base_url + "tulip.png" },
+            { topic: "這是真的花嗎？", item: "老花", isCorrect: false, image: image_base_url + "presbyopia_glasses.png" },
+            { topic: "這是真的花嗎？", item: "五月花", isCorrect: false, image: image_base_url + "tissue.png" },
+            { topic: "這是真的花嗎？", item: "繡球花", isCorrect: true, image: image_base_url + "hydrangea.png" },
         ];
 
         // 步驟 2: 獲取需要操作的 HTML 元素
         const topicEl = document.getElementById('topic');
         const itemEl = document.getElementById('item');
-        const emojiEl = document.getElementById('emoji');
+        const imageEl = document.getElementById('item-image');
         const answerEl = document.getElementById('answer');
         const prevBtn = document.getElementById('prev-btn');
         const nextBtn = document.getElementById('next-btn');
@@ -139,7 +142,8 @@
             // 更新畫面上的內容
             topicEl.textContent = slideData.topic;
             itemEl.textContent = slideData.item;
-            emojiEl.textContent = slideData.emoji;
+            imageEl.src = slideData.image;
+            imageEl.alt = slideData.item; // 設定圖片的替代文字，有助於無障礙閱讀
 
             // 準備答案內容，但先不顯示
             if (slideData.isCorrect) {

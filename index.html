@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>左右為難 - 互動遊戲 (四人整合版)</title>
-    <!-- 引入 Tailwind CSS 以方便快速設計美觀的介面 -->
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         /* 額外添加一些樣式，確保在所有裝置上都能有好的視覺效果 */
@@ -25,35 +24,72 @@
             from { opacity: 0; }
             to { opacity: 1; }
         }
+        /* 載入進度條樣式 */
+        .loading-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.9);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+        }
+        .loading-bar {
+            width: 300px;
+            height: 20px;
+            background-color: #333;
+            border-radius: 10px;
+            overflow: hidden;
+            margin-top: 20px;
+        }
+        .loading-progress {
+            height: 100%;
+            background-color: #4CAF50;
+            transition: width 0.3s ease;
+        }
+        .loading-text {
+            color: white;
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+        .loading-percentage {
+            color: white;
+            font-size: 18px;
+            margin-top: 10px;
+        }
     </style>
 </head>
 <body class="bg-gray-100 flex items-center justify-center min-h-screen p-4">
 
-    <!-- 主遊戲容器 -->
-    <div class="bg-white rounded-2xl shadow-2xl p-6 md:p-10 w-full max-w-4xl text-center flex flex-col">
+    <!-- 載入畫面 -->
+    <div id="loading-overlay" class="loading-overlay">
+        <div class="loading-text">載入遊戲資源中...</div>
+        <div class="loading-bar">
+            <div id="loading-progress" class="loading-progress" style="width: 0%"></div>
+        </div>
+        <div id="loading-percentage" class="loading-percentage">0%</div>
+    </div>
 
-        <!-- 投影片內容區域 -->
+    <div class="bg-white rounded-2xl shadow-2xl p-6 md:p-10 w-full max-w-4xl text-center flex flex-col" style="display: none;" id="game-container">
+
         <div id="slide-content" class="content-container flex-grow flex flex-col items-center justify-center mb-6">
-            <!-- 題目類別 -->
             <h1 id="topic" class="text-4xl md:text-5xl font-bold text-gray-800 mb-4"></h1>
-            <!-- 題目項目文字 -->
             <h2 id="item" class="text-7xl md:text-9xl font-extrabold text-blue-600 mb-8"></h2>
-            
-            <!-- 圖片容器 (預設隱藏) -->
+
             <div id="image-container" class="w-64 h-64 md:w-80 md:h-80 mb-4 flex items-center justify-center hidden">
                 <img id="item-image" src="" alt="題目圖片" class="max-w-full max-h-full object-contain rounded-lg">
             </div>
-            <!-- 正確答案提示 (預設隱藏) -->
             <div id="answer" class="text-5xl md:text-7xl font-bold hidden"></div>
         </div>
 
-        <!-- 操作按鈕區域 -->
         <div class="w-full flex flex-col items-center">
-            <!-- 顯示答案按鈕 -->
             <button id="show-answer-btn" class="text-lg md:text-xl font-bold bg-green-500 hover:bg-green-600 text-white py-3 px-8 rounded-lg transition-colors w-full md:w-2/3 mb-5">
                 顯示答案
             </button>
-            <!-- 導覽按鈕區域 -->
             <div class="flex w-full justify-between gap-3">
                 <button id="prev-btn" class="text-base md:text-lg font-bold bg-gray-300 hover:bg-gray-400 text-gray-800 py-2 px-4 rounded-lg transition-colors w-1/2">
                     上一張
@@ -67,109 +103,112 @@
     </div>
 
     <script>
-        // 圖片庫的基礎 URL
-        const image_base_url = "https://raw.githubusercontent.com/hctsai1006/taiwan-dementia-quiz-game/main/images/";
+        // 圖片庫的基礎 URL - 使用 jsdelivr CDN 加速 GitHub 圖片載入
+        const USE_CDN = true; // 設為 true 使用 CDN 加速，false 則使用原始 GitHub URL
+        const image_base_url = USE_CDN 
+            ? "https://cdn.jsdelivr.net/gh/hctsai1006/taiwan-dementia-quiz-game@main/images/"
+            : "https://raw.githubusercontent.com/hctsai1006/taiwan-dementia-quiz-game/main/images/";
 
         // 步驟 1: 結構化所有人的題目
         // 宣妤的題目
         const xuanyu_set1 = [
-            { topic: "這個物品是紅色的嗎？", item: "草莓", isCorrect: true, image: image_base_url + "strawberry.png" },
-            { topic: "這個物品是紅色的嗎？", item: "香蕉", isCorrect: false, image: image_base_url + "banana.png" },
-            { topic: "這個物品是紅色的嗎？", item: "番茄", isCorrect: true, image: image_base_url + "tomato.png" },
-            { topic: "這個物品是紅色的嗎？", item: "高麗菜", isCorrect: false, image: image_base_url + "cabbage.png" },
-            { topic: "這個物品是紅色的嗎？", item: "消防車", isCorrect: true, image: image_base_url + "fire_truck.png" },
-            { topic: "這個物品是紅色的嗎？", item: "蘿蔔糕", isCorrect: false, image: image_base_url + "turnip_cake.png" },
-            { topic: "這個物品是紅色的嗎？", item: "綠豆湯", isCorrect: false, image: image_base_url + "mung_bean_soup.png" },
-            { topic: "這個物品是紅色的嗎？", item: "紅包", isCorrect: true, image: image_base_url + "red_envelope.png" },
-            { topic: "這個物品是紅色的嗎？", item: "紅燈", isCorrect: true, image: image_base_url + "red_light.png" },
-            { topic: "這個物品是紅色的嗎？", item: "菠菜", isCorrect: false, image: image_base_url + "spinach.png" },
+            { topic: "這個物品是紅色的嗎？", item: "草莓", isCorrect: true, image: image_base_url + "草莓.png" },
+            { topic: "這個物品是紅色的嗎？", item: "香蕉", isCorrect: false, image: image_base_url + "香蕉.png" },
+            { topic: "這個物品是紅色的嗎？", item: "番茄", isCorrect: true, image: image_base_url + "番茄.png" },
+            { topic: "這個物品是紅色的嗎？", item: "高麗菜", isCorrect: false, image: image_base_url + "高麗菜.png" },
+            { topic: "這個物品是紅色的嗎？", item: "消防車", isCorrect: true, image: image_base_url + "消防車.png" },
+            { topic: "這個物品是紅色的嗎？", item: "蘿蔔糕", isCorrect: false, image: image_base_url + "蘿蔔糕.png" },
+            { topic: "這個物品是紅色的嗎？", item: "綠豆湯", isCorrect: false, image: image_base_url + "綠豆湯.png" },
+            { topic: "這個物品是紅色的嗎？", item: "紅包", isCorrect: true, image: image_base_url + "紅包.png" },
+            { topic: "這個物品是紅色的嗎？", item: "紅燈", isCorrect: true, image: image_base_url + "紅燈.png" },
+            { topic: "這個物品是紅色的嗎？", item: "菠菜", isCorrect: false, image: image_base_url + "波菜.png" },
         ];
         const xuanyu_set2 = [
-            { topic: "這是交通工具嗎？", item: "火車", isCorrect: true, image: image_base_url + "train.png" },
-            { topic: "這是交通工具嗎？", item: "火爐", isCorrect: false, image: image_base_url + "stove.png" },
-            { topic: "這是交通工具嗎？", item: "公車", isCorrect: true, image: image_base_url + "bus.png" },
-            { topic: "這是交通工具嗎？", item: "公園", isCorrect: false, image: image_base_url + "park.png" },
-            { topic: "這是交通工具嗎？", item: "椅子", isCorrect: false, image: image_base_url + "chair.png" },
-            { topic: "這是交通工具嗎？", item: "飛機", isCorrect: true, image: image_base_url + "airplane.png" },
-            { topic: "這是交通工具嗎？", item: "雲霄飛車", isCorrect: false, image: "https://placehold.co/400x400/e2e8f0/4a5568?text=雲霄飛車" },
-            { topic: "這是交通工具嗎？", item: "捷運", isCorrect: true, image: image_base_url + "mrt.png" },
-            { topic: "這是交通工具嗎？", item: "計程車", isCorrect: true, image: image_base_url + "taxi.png" },
-            { topic: "這是交通工具嗎？", item: "吹風機", isCorrect: false, image: image_base_url + "hair_dryer.png" },
+            { topic: "這是交通工具嗎？", item: "火車", isCorrect: true, image: image_base_url + "火車.png" },
+            { topic: "這是交通工具嗎？", item: "火爐", isCorrect: false, image: image_base_url + "火爐.png" },
+            { topic: "這是交通工具嗎？", item: "公車", isCorrect: true, image: image_base_url + "公車.png" },
+            { topic: "這是交通工具嗎？", item: "公園", isCorrect: false, image: image_base_url + "公園.png" },
+            { topic: "這是交通工具嗎？", item: "椅子", isCorrect: false, image: image_base_url + "椅子.png" },
+            { topic: "這是交通工具嗎？", item: "飛機", isCorrect: true, image: image_base_url + "飛機.png" },
+            { topic: "這是交通工具嗎？", item: "雲霄飛車", isCorrect: false, image: image_base_url + "雲霄飛車.png" },
+            { topic: "這是交通工具嗎？", item: "捷運", isCorrect: true, image: image_base_url + "捷運.png" },
+            { topic: "這是交通工具嗎？", item: "計程車", isCorrect: true, image: image_base_url + "計程車.png" },
+            { topic: "這是交通工具嗎？", item: "吹風機", isCorrect: false, image: image_base_url + "吹風機.png" },
         ];
         // 秀吉的題目
         const xiuji_set1 = [
-            { topic: "這種動物會飛嗎？", item: "麻雀", isCorrect: true, image: image_base_url + "sparrow.png" },
-            { topic: "這種動物會飛嗎？", item: "貓咪", isCorrect: false, image: image_base_url + "cat.png" },
-            { topic: "這種動物會飛嗎？", item: "蝴蝶", isCorrect: true, image: image_base_url + "butterfly.png" },
-            { topic: "這種動物會飛嗎？", item: "狗狗", isCorrect: false, image: image_base_url + "dog.png" },
-            { topic: "這種動物會飛嗎？", item: "老鷹", isCorrect: true, image: image_base_url + "eagle.png" },
-            { topic: "這種動物會飛嗎？", item: "金魚", isCorrect: false, image: image_base_url + "goldfish.png" },
-            { topic: "這種動物會飛嗎？", item: "蚊子", isCorrect: true, image: image_base_url + "mosquito.png" },
-            { topic: "這種動物會飛嗎？", item: "豬", isCorrect: false, image: image_base_url + "pig.png" },
-            { topic: "這種動物會飛嗎？", item: "鴿子", isCorrect: true, image: image_base_url + "pigeon.png" },
-            { topic: "這種動物會飛嗎？", item: "烏龜", isCorrect: false, image: image_base_url + "turtle.png" },
+            { topic: "這種動物會飛嗎？", item: "麻雀", isCorrect: true, image: image_base_url + "麻雀.png" },
+            { topic: "這種動物會飛嗎？", item: "貓咪", isCorrect: false, image: image_base_url + "貓咪.png" },
+            { topic: "這種動物會飛嗎？", item: "蝴蝶", isCorrect: true, image: image_base_url + "蝴蝶.png" },
+            { topic: "這種動物會飛嗎？", item: "狗狗", isCorrect: false, image: image_base_url + "小狗.png" },
+            { topic: "這種動物會飛嗎？", item: "老鷹", isCorrect: true, image: image_base_url + "老鷹.png" },
+            { topic: "這種動物會飛嗎？", item: "金魚", isCorrect: false, image: image_base_url + "金魚.png" },
+            { topic: "這種動物會飛嗎？", item: "蚊子", isCorrect: true, image: image_base_url + "蚊子.jpg" },
+            { topic: "這種動物會飛嗎？", item: "豬", isCorrect: false, image: image_base_url + "豬.jpg" },
+            { topic: "這種動物會飛嗎？", item: "鴿子", isCorrect: true, image: image_base_url + "鴿子.png" },
+            { topic: "這種動物會飛嗎？", item: "烏龜", isCorrect: false, image: image_base_url + "烏龜.jpg" },
         ];
         const xiuji_set2 = [
-            { topic: "這個東西可以吃嗎？", item: "饅頭", isCorrect: true, image: image_base_url + "steamed_bun.png" },
-            { topic: "這個東西可以吃嗎？", item: "肥皂", isCorrect: false, image: image_base_url + "soap.png" },
-            { topic: "這個東西可以吃嗎？", item: "蘋果", isCorrect: true, image: image_base_url + "apple.png" },
-            { topic: "這個東西可以吃嗎？", item: "牙刷", isCorrect: false, image: image_base_url + "toothbrush.png" },
-            { topic: "這個東西可以吃嗎？", item: "滷肉飯", isCorrect: true, image: image_base_url + "braised_pork_rice.png" },
-            { topic: "這個東西可以吃嗎？", item: "碗", isCorrect: false, image: image_base_url + "bowl.png" },
-            { topic: "這個東西可以吃嗎？", item: "粽子", isCorrect: true, image: image_base_url + "zongzi.png" },
-            { topic: "這個東西可以吃嗎？", item: "雞毛撢子", isCorrect: false, image: image_base_url + "feather_duster.png" },
-            { topic: "這個東西可以吃嗎？", item: "綠豆湯", isCorrect: true, image: image_base_url + "mung_bean_soup.png" },
-            { topic: "這個東西可以吃嗎？", item: "拖鞋", isCorrect: false, image: image_base_url + "slippers.png" },
+            { topic: "這個東西可以吃嗎？", item: "饅頭", isCorrect: true, image: image_base_url + "包子.png" },
+            { topic: "這個東西可以吃嗎？", item: "肥皂", isCorrect: false, image: image_base_url + "肥皂.png" },
+            { topic: "這個東西可以吃嗎？", item: "蘋果", isCorrect: true, image: image_base_url + "蘋果.png" },
+            { topic: "這個東西可以吃嗎？", item: "牙刷", isCorrect: false, image: image_base_url + "牙刷.png" },
+            { topic: "這個東西可以吃嗎？", item: "滷肉飯", isCorrect: true, image: image_base_url + "滷肉飯.png" },
+            { topic: "這個東西可以吃嗎？", item: "碗", isCorrect: false, image: image_base_url + "碗.png" },
+            { topic: "這個東西可以吃嗎？", item: "粽子", isCorrect: true, image: image_base_url + "粽子.png" },
+            { topic: "這個東西可以吃嗎？", item: "雞毛撢子", isCorrect: false, image: image_base_url + "雞毛撢子.png" },
+            { topic: "這個東西可以吃嗎？", item: "綠豆湯", isCorrect: true, image: image_base_url + "綠豆湯.png" },
+            { topic: "這個東西可以吃嗎？", item: "拖鞋", isCorrect: false, image: image_base_url + "藍白拖.jpg" },
         ];
         // 宜璇的題目
         const yixuan_set1 = [
-            { topic: "這是廚房用品嗎？", item: "鍋子", isCorrect: true, image: image_base_url + "pot.png" },
-            { topic: "這是廚房用品嗎？", item: "電視", isCorrect: false, image: image_base_url + "tv.png" },
-            { topic: "這是廚房用品嗎？", item: "電鍋", isCorrect: true, image: image_base_url + "rice_cooker.png" },
-            { topic: "這是廚房用品嗎？", item: "鍋鏟", isCorrect: true, image: image_base_url + "spatula.png" },
-            { topic: "這是廚房用品嗎？", item: "烘碗機", isCorrect: true, image: image_base_url + "dish_dryer.png" },
-            { topic: "這是廚房用品嗎？", item: "除濕機", isCorrect: false, image: image_base_url + "dehumidifier.png" },
-            { topic: "這是廚房用品嗎？", item: "菜刀", isCorrect: true, image: image_base_url + "kitchen_knife.png" },
-            { topic: "這是廚房用品嗎？", item: "衣架", isCorrect: false, image: image_base_url + "hanger.png" },
-            { topic: "這是廚房用品嗎？", item: "電風扇", isCorrect: false, image: image_base_url + "fan.png" },
-            { topic: "這是廚房用品嗎？", item: "瓦斯爐", isCorrect: true, image: image_base_url + "gas_stove.png" },
+            { topic: "這是廚房用品嗎？", item: "鍋子", isCorrect: true, image: image_base_url + "鍋子.png" },
+            { topic: "這是廚房用品嗎？", item: "電視", isCorrect: false, image: image_base_url + "電視.png" },
+            { topic: "這是廚房用品嗎？", item: "電鍋", isCorrect: true, image: image_base_url + "電鍋.png" },
+            { topic: "這是廚房用品嗎？", item: "鍋鏟", isCorrect: true, image: image_base_url + "鍋鏟.png" },
+            { topic: "這是廚房用品嗎？", item: "烘碗機", isCorrect: true, image: image_base_url + "烘碗機.png" },
+            { topic: "這是廚房用品嗎？", item: "除濕機", isCorrect: false, image: image_base_url + "除濕機.png" },
+            { topic: "這是廚房用品嗎？", item: "菜刀", isCorrect: true, image: image_base_url + "菜刀.png" },
+            { topic: "這是廚房用品嗎？", item: "衣架", isCorrect: false, image: image_base_url + "衣架.png" },
+            { topic: "這是廚房用品嗎？", item: "電風扇", isCorrect: false, image: image_base_url + "電風扇.png" },
+            { topic: "這是廚房用品嗎？", item: "瓦斯爐", isCorrect: true, image: image_base_url + "瓦斯爐.png" },
         ];
         const yixuan_set2 = [
-            { topic: "這是真的花嗎？", item: "向日葵", isCorrect: true, image: image_base_url + "sunflower.png" },
-            { topic: "這是真的花嗎？", item: "屁股開花", isCorrect: false, image: image_base_url + "fall_down.png" },
-            { topic: "這是真的花嗎？", item: "玫瑰花", isCorrect: true, image: image_base_url + "rose.png" },
-            { topic: "這是真的花嗎？", item: "牽牛花", isCorrect: true, image: image_base_url + "morning_glory.png" },
-            { topic: "這是真的花嗎？", item: "百合花", isCorrect: true, image: image_base_url + "lily.png" },
-            { topic: "這是真的花嗎？", item: "有錢花", isCorrect: false, image: image_base_url + "spending_money.png" },
-            { topic: "這是真的花嗎？", item: "鬱金香", isCorrect: true, image: image_base_url + "tulip.png" },
-            { topic: "這是真的花嗎？", item: "老花", isCorrect: false, image: image_base_url + "presbyopia_glasses.png" },
-            { topic: "這是真的花嗎？", item: "五月花", isCorrect: false, image: image_base_url + "tissue.png" },
-            { topic: "這是真的花嗎？", item: "繡球花", isCorrect: true, image: image_base_url + "hydrangea.png" },
+            { topic: "這是真的花嗎？", item: "向日葵", isCorrect: true, image: image_base_url + "向日葵.png" },
+            { topic: "這是真的花嗎？", item: "屁股開花", isCorrect: false, image: image_base_url + "屁股開花.png" },
+            { topic: "這是真的花嗎？", item: "玫瑰花", isCorrect: true, image: image_base_url + "玫瑰花.png" },
+            { topic: "這是真的花嗎？", item: "牽牛花", isCorrect: true, image: image_base_url + "牽牛花.png" },
+            { topic: "這是真的花嗎？", item: "百合花", isCorrect: true, image: image_base_url + "百合花.png" },
+            { topic: "這是真的花嗎？", item: "有錢花", isCorrect: false, image: image_base_url + "有錢花.png" },
+            { topic: "這是真的花嗎？", item: "鬱金香", isCorrect: true, image: image_base_url + "鬱金香.png" },
+            { topic: "這是真的花嗎？", item: "老花", isCorrect: false, image: image_base_url + "老花.png" },
+            { topic: "這是真的花嗎？", item: "五月花", isCorrect: false, image: image_base_url + "五月花.jpg" },
+            { topic: "這是真的花嗎？", item: "繡球花", isCorrect: true, image: image_base_url + "繡球花.png" },
         ];
         // 定萬的題目
         const dingwan_set1 = [
-            { topic: "這是動物嗎？", item: "長頸鹿", isCorrect: true, image: image_base_url + "giraffe.png" },
-            { topic: "這是動物嗎？", item: "蜜蜂", isCorrect: true, image: image_base_url + "bee.png" },
-            { topic: "這是動物嗎？", item: "斑馬", isCorrect: true, image: image_base_url + "zebra.png" },
-            { topic: "這是動物嗎？", item: "企鵝", isCorrect: true, image: image_base_url + "penguin.png" },
-            { topic: "這是動物嗎？", item: "小狗", isCorrect: true, image: image_base_url + "dog.png" },
-            { topic: "這是動物嗎？", item: "高速公路", isCorrect: false, image: image_base_url + "highway.png" },
-            { topic: "這是動物嗎？", item: "斑馬線", isCorrect: false, image: image_base_url + "crosswalk.png" },
-            { topic: "這是動物嗎？", item: "蜂蜜", isCorrect: false, image: image_base_url + "honey.png" },
-            { topic: "這是動物嗎？", item: "密封包裝", isCorrect: false, image: image_base_url + "sealed_package.png" },
-            { topic: "這是動物嗎？", item: "釣魚", isCorrect: false, image: image_base_url + "fishing.png" },
+            { topic: "這是動物嗎？", item: "長頸鹿", isCorrect: true, image: image_base_url + "長頸鹿.png" },
+            { topic: "這是動物嗎？", item: "蜜蜂", isCorrect: true, image: image_base_url + "蜜蜂.png" },
+            { topic: "這是動物嗎？", item: "斑馬", isCorrect: true, image: image_base_url + "斑馬.png" },
+            { topic: "這是動物嗎？", item: "企鵝", isCorrect: true, image: image_base_url + "企鵝.png" },
+            { topic: "這是動物嗎？", item: "小狗", isCorrect: true, image: image_base_url + "小狗.png" },
+            { topic: "這是動物嗎？", item: "高速公路", isCorrect: false, image: image_base_url + "高速公路.png" },
+            { topic: "這是動物嗎？", item: "斑馬線", isCorrect: false, image: image_base_url + "斑馬線.png" },
+            { topic: "這是動物嗎？", item: "蜂蜜", isCorrect: false, image: image_base_url + "蜂蜜.png" },
+            { topic: "這是動物嗎？", item: "密封包裝", isCorrect: false, image: image_base_url + "密封包裝.png" },
+            { topic: "這是動物嗎？", item: "釣魚", isCorrect: false, image: image_base_url + "釣魚.png" },
         ];
          const dingwan_set2 = [
-            { topic: "這是運動嗎？", item: "游泳", isCorrect: true, image: image_base_url + "swimming.png" },
-            { topic: "這是運動嗎？", item: "跑步", isCorrect: true, image: image_base_url + "running.png" },
-            { topic: "這是運動嗎？", item: "踢足球", isCorrect: true, image: image_base_url + "playing_soccer.png" },
-            { topic: "這是運動嗎？", item: "瑜伽", isCorrect: true, image: image_base_url + "yoga.png" },
-            { topic: "這是運動嗎？", item: "跳繩", isCorrect: true, image: image_base_url + "jump_rope.png" },
-            { topic: "這是運動嗎？", item: "睡覺", isCorrect: false, image: image_base_url + "sleeping.png" },
-            { topic: "這是運動嗎？", item: "吃午餐", isCorrect: false, image: image_base_url + "eating_lunch.png" },
-            { topic: "這是運動嗎？", item: "公園", isCorrect: false, image: image_base_url + "park.png" },
-            { topic: "這是運動嗎？", item: "啞鈴", isCorrect: false, image: image_base_url + "dumbbell.png" },
-            { topic: "這是運動嗎？", item: "聊天", isCorrect: false, image: image_base_url + "chatting.png" },
+            { topic: "這是運動嗎？", item: "游泳", isCorrect: true, image: image_base_url + "游泳.png" },
+            { topic: "這是運動嗎？", item: "跑步", isCorrect: true, image: image_base_url + "跑步.png" },
+            { topic: "這是運動嗎？", item: "踢足球", isCorrect: true, image: image_base_url + "踢足球.png" },
+            { topic: "這是運動嗎？", item: "瑜伽", isCorrect: true, image: image_base_url + "瑜珈.png" },
+            { topic: "這是運動嗎？", item: "跳繩", isCorrect: true, image: image_base_url + "跳繩.png" },
+            { topic: "這是運動嗎？", item: "睡覺", isCorrect: false, image: image_base_url + "睡覺.png" },
+            { topic: "這是運動嗎？", item: "吃午餐", isCorrect: false, image: image_base_url + "吃午餐.png" },
+            { topic: "這是運動嗎？", item: "公園", isCorrect: false, image: image_base_url + "公園.png" },
+            { topic: "這是運動嗎？", item: "啞鈴", isCorrect: false, image: image_base_url + "啞鈴.png" },
+            { topic: "這是運動嗎？", item: "聊天", isCorrect: false, image: image_base_url + "聊天.png" },
         ];
 
         // 步驟 2: 按照指定順序重新排列所有題目
@@ -188,17 +227,53 @@
         const prevBtn = document.getElementById('prev-btn');
         const nextBtn = document.getElementById('next-btn');
         const showAnswerBtn = document.getElementById('show-answer-btn');
+        const loadingOverlay = document.getElementById('loading-overlay');
+        const loadingProgress = document.getElementById('loading-progress');
+        const loadingPercentage = document.getElementById('loading-percentage');
+        const gameContainer = document.getElementById('game-container');
 
         let currentSlide = 0;
+        let loadedImages = 0;
 
-        // **優化：預先載入所有圖片以加速顯示**
+        // **優化：進階預載圖片功能，支援進度條顯示**
         function preloadImages() {
-            slides.forEach(slide => {
-                const link = document.createElement('link');
-                link.rel = 'preload';
-                link.as = 'image';
-                link.href = slide.image;
-                document.head.appendChild(link);
+            return new Promise((resolve) => {
+                const totalImages = slides.length;
+                const imageCache = [];
+
+                slides.forEach((slide, index) => {
+                    const img = new Image();
+                    img.src = slide.image;
+                    
+                    // 每張圖片載入完成後更新進度
+                    img.onload = img.onerror = () => {
+                        loadedImages++;
+                        const percentage = Math.round((loadedImages / totalImages) * 100);
+                        loadingProgress.style.width = percentage + '%';
+                        loadingPercentage.textContent = percentage + '%';
+                        
+                        // 將載入的圖片存入快取
+                        imageCache[index] = img;
+                        
+                        // 所有圖片載入完成
+                        if (loadedImages === totalImages) {
+                            setTimeout(() => {
+                                loadingOverlay.style.display = 'none';
+                                gameContainer.style.display = 'flex';
+                                resolve();
+                            }, 500); // 稍微延遲以確保進度條到達100%
+                        }
+                    };
+                });
+
+                // 同時使用 link preload 加速載入（支援的瀏覽器）
+                slides.forEach(slide => {
+                    const link = document.createElement('link');
+                    link.rel = 'preload';
+                    link.as = 'image';
+                    link.href = slide.image;
+                    document.head.appendChild(link);
+                });
             });
         }
 
@@ -214,8 +289,8 @@
             imageEl.src = slideData.image; // 先設定好圖片來源
             imageEl.alt = slideData.item;
             imageContainerEl.classList.add('hidden');
-            
-            // **修正**：正確地設定答案的樣式，並確保它在一開始是隱藏的
+
+            // 正確地設定答案的樣式，並確保它在一開始是隱藏的
             answerEl.className = 'text-5xl md:text-7xl font-bold fade-in'; // 先設定基礎樣式
             if (slideData.isCorrect) {
                 answerEl.textContent = '正確';
@@ -225,7 +300,7 @@
                 answerEl.classList.add('text-red-500');
             }
             answerEl.classList.add('hidden'); // 在設定完樣式後，確保它是隱藏的
-            
+
             // 3. 重置按鈕狀態
             showAnswerBtn.classList.remove('hidden');
 
@@ -246,7 +321,7 @@
             answerEl.classList.remove('hidden');
             showAnswerBtn.classList.add('hidden'); // 隱藏自己
         });
-        
+
         nextBtn.addEventListener('click', () => {
             if (currentSlide < slides.length - 1) {
                 currentSlide++;
@@ -261,9 +336,34 @@
             }
         });
 
+        // 鍵盤控制支援
+        document.addEventListener('keydown', (e) => {
+            switch(e.key) {
+                case 'ArrowLeft':
+                    if (currentSlide > 0) {
+                        currentSlide--;
+                        renderSlide();
+                    }
+                    break;
+                case 'ArrowRight':
+                    if (currentSlide < slides.length - 1) {
+                        currentSlide++;
+                        renderSlide();
+                    }
+                    break;
+                case ' ':
+                case 'Enter':
+                    if (!showAnswerBtn.classList.contains('hidden')) {
+                        showAnswerBtn.click();
+                    }
+                    break;
+            }
+        });
+
         // 初始載入
-        preloadImages(); // 遊戲開始前先預載圖片
-        renderSlide();   // 顯示第一張投影片
+        preloadImages().then(() => {
+            renderSlide();   // 顯示第一張投影片
+        });
     </script>
 </body>
 </html>

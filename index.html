@@ -61,12 +61,36 @@
             font-size: 18px;
             margin-top: 10px;
         }
+        /* 通用的容器樣式 */
+        .screen-container {
+             background-color: white;
+             border-radius: 1rem; /* rounded-2xl */
+             box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25); /* shadow-2xl */
+             padding: 2.5rem; /* p-10 */
+             width: 100%;
+             max-width: 56rem; /* max-w-4xl */
+             text-align: center;
+             display: flex;
+             flex-direction: column;
+             justify-content: center;
+             align-items: center;
+        }
     </style>
 </head>
 <body class="bg-gray-100 flex items-center justify-center min-h-screen p-4">
 
+    <!-- 起始畫面 -->
+    <div id="start-screen" class="screen-container relative">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/d/d5/Logo_of_Taipei_City_Hospital.svg" alt="聯合醫院 Logo" class="absolute top-4 right-4 w-16 h-16 md:w-20 md:h-20">
+        <h1 class="text-6xl md:text-8xl font-extrabold text-blue-600 mb-8">【左右為難】</h1>
+        <h2 class="text-2xl md:text-3xl font-bold text-gray-700 mb-12">認知反應小遊戲</h2>
+        <button id="start-btn" class="text-xl md:text-2xl font-bold bg-green-500 hover:bg-green-600 text-white py-4 px-10 rounded-lg transition-transform transform hover:scale-105">
+            開始遊戲
+        </button>
+    </div>
+
     <!-- 載入畫面 -->
-    <div id="loading-overlay" class="loading-overlay">
+    <div id="loading-overlay" class="loading-overlay" style="display: none;">
         <div class="loading-text">載入遊戲資源中...</div>
         <div class="loading-bar">
             <div id="loading-progress" class="loading-progress" style="width: 0%"></div>
@@ -74,9 +98,9 @@
         <div id="loading-percentage" class="loading-percentage">0%</div>
     </div>
 
-    <div class="bg-white rounded-2xl shadow-2xl p-6 md:p-10 w-full max-w-4xl text-center flex flex-col" style="display: none;" id="game-container">
-
-        <div id="slide-content" class="content-container flex-grow flex flex-col items-center justify-center mb-6">
+    <!-- 遊戲主畫面 -->
+    <div id="game-container" class="screen-container" style="display: none;">
+        <div id="slide-content" class="content-container flex-grow flex flex-col items-center justify-center mb-6 w-full">
             <h1 id="topic" class="text-4xl md:text-5xl font-bold text-gray-800 mb-4"></h1>
             <h2 id="item" class="text-7xl md:text-9xl font-extrabold text-blue-600 mb-8"></h2>
 
@@ -99,8 +123,17 @@
                 </button>
             </div>
         </div>
-
     </div>
+    
+    <!-- 結束畫面 -->
+    <div id="end-screen" class="screen-container" style="display: none;">
+         <h1 class="text-5xl md:text-7xl font-extrabold text-green-500 mb-8">恭喜你！</h1>
+        <h2 class="text-2xl md:text-3xl font-bold text-gray-700 mb-12">完成所有挑戰！</h2>
+        <button id="restart-btn" class="text-xl md:text-2xl font-bold bg-blue-500 hover:bg-blue-600 text-white py-4 px-10 rounded-lg transition-transform transform hover:scale-105">
+            再玩一次
+        </button>
+    </div>
+
 
     <script>
         // 圖片庫的基礎 URL - 使用 jsdelivr CDN 加速 GitHub 圖片載入
@@ -211,7 +244,7 @@
             { topic: "下列何者是運動？是運動的站圈，不是的站叉。", item: "聊天", isCorrect: false, image: image_base_url + "聊天.png" },
         ];
 
-        // 步驟 2: 【已修改】按照新的指定順序重新排列所有題目
+        // 步驟 2: 按照新的指定順序重新排列所有題目
         const slides = [
             ...xuanyu_set1,
             ...xiuji_set1,
@@ -224,6 +257,14 @@
         ];
 
         // 步驟 3: 獲取需要操作的 HTML 元素
+        const startScreen = document.getElementById('start-screen');
+        const endScreen = document.getElementById('end-screen');
+        const gameContainer = document.getElementById('game-container');
+        const loadingOverlay = document.getElementById('loading-overlay');
+
+        const startBtn = document.getElementById('start-btn');
+        const restartBtn = document.getElementById('restart-btn');
+        
         const topicEl = document.getElementById('topic');
         const itemEl = document.getElementById('item');
         const imageContainerEl = document.getElementById('image-container');
@@ -232,58 +273,49 @@
         const prevBtn = document.getElementById('prev-btn');
         const nextBtn = document.getElementById('next-btn');
         const showAnswerBtn = document.getElementById('show-answer-btn');
-        const loadingOverlay = document.getElementById('loading-overlay');
+        
         const loadingProgress = document.getElementById('loading-progress');
         const loadingPercentage = document.getElementById('loading-percentage');
-        const gameContainer = document.getElementById('game-container');
 
         let currentSlide = 0;
         let loadedImages = 0;
+        let imagesPreloaded = false;
 
         // **優化：進階預載圖片功能，支援進度條顯示**
         function preloadImages() {
+            // 如果已經載入過，就直接 resolve
+            if (imagesPreloaded) {
+                return Promise.resolve();
+            }
             return new Promise((resolve) => {
                 const totalImages = slides.length;
                 if (totalImages === 0) { // 如果沒有圖片，直接完成
-                    loadingOverlay.style.display = 'none';
-                    gameContainer.style.display = 'flex';
+                    imagesPreloaded = true;
                     resolve();
                     return;
                 }
                 const imageCache = [];
+                loadedImages = 0;
 
                 slides.forEach((slide, index) => {
                     const img = new Image();
                     img.src = slide.image;
                     
-                    // 每張圖片載入完成後更新進度
                     img.onload = img.onerror = () => {
                         loadedImages++;
                         const percentage = Math.round((loadedImages / totalImages) * 100);
                         loadingProgress.style.width = percentage + '%';
                         loadingPercentage.textContent = percentage + '%';
                         
-                        // 將載入的圖片存入快取
                         imageCache[index] = img;
                         
-                        // 所有圖片載入完成
                         if (loadedImages === totalImages) {
+                            imagesPreloaded = true; // 標記為已載入
                             setTimeout(() => {
-                                loadingOverlay.style.display = 'none';
-                                gameContainer.style.display = 'flex';
                                 resolve();
-                            }, 500); // 稍微延遲以確保進度條到達100%
+                            }, 500);
                         }
                     };
-                });
-
-                // 同時使用 link preload 加速載入（支援的瀏覽器）
-                slides.forEach(slide => {
-                    const link = document.createElement('link');
-                    link.rel = 'preload';
-                    link.as = 'image';
-                    link.href = slide.image;
-                    document.head.appendChild(link);
                 });
             });
         }
@@ -292,17 +324,14 @@
         function renderSlide() {
             const slideData = slides[currentSlide];
 
-            // 1. 只顯示題目文字
             topicEl.textContent = slideData.topic;
             itemEl.textContent = slideData.item;
 
-            // 2. 準備好圖片和答案，但先全部隱藏
-            imageEl.src = slideData.image; // 先設定好圖片來源
+            imageEl.src = slideData.image;
             imageEl.alt = slideData.item;
             imageContainerEl.classList.add('hidden');
 
-            // 正確地設定答案的樣式，並確保它在一開始是隱藏的
-            answerEl.className = 'text-5xl md:text-7xl font-bold fade-in'; // 先設定基礎樣式
+            answerEl.className = 'text-5xl md:text-7xl font-bold fade-in';
             if (slideData.isCorrect) {
                 answerEl.textContent = 'Ｏ';
                 answerEl.classList.add('text-green-500');
@@ -310,33 +339,53 @@
                 answerEl.textContent = 'Ｘ';
                 answerEl.classList.add('text-red-500');
             }
-            answerEl.classList.add('hidden'); // 在設定完樣式後，確保它是隱藏的
+            answerEl.classList.add('hidden');
 
-            // 3. 重置按鈕狀態
             showAnswerBtn.classList.remove('hidden');
 
             prevBtn.disabled = currentSlide === 0;
             prevBtn.classList.toggle('opacity-50', currentSlide === 0);
             prevBtn.classList.toggle('cursor-not-allowed', currentSlide === 0);
 
-            nextBtn.disabled = currentSlide === slides.length - 1;
-            nextBtn.classList.toggle('opacity-50', currentSlide === slides.length - 1);
-            nextBtn.classList.toggle('cursor-not-allowed', currentSlide === slides.length - 1);
+            nextBtn.disabled = false;
+            nextBtn.classList.remove('opacity-50', 'cursor-not-allowed');
         }
 
         // 步驟 5: 綁定按鈕的點擊事件
+        startBtn.addEventListener('click', () => {
+            startScreen.style.display = 'none';
+            loadingOverlay.style.display = 'flex';
+            
+            preloadImages().then(() => {
+                loadingOverlay.style.display = 'none';
+                gameContainer.style.display = 'flex';
+                renderSlide();
+            });
+        });
+        
+        restartBtn.addEventListener('click', () => {
+            endScreen.style.display = 'none';
+            startScreen.style.display = 'flex';
+            currentSlide = 0;
+            // 重置進度條，以防萬一
+            loadingProgress.style.width = '0%';
+            loadingPercentage.textContent = '0%';
+        });
+
         showAnswerBtn.addEventListener('click', () => {
-            // 點擊後，才顯示圖片和答案
             imageContainerEl.classList.remove('hidden');
-            imageContainerEl.classList.add('fade-in'); // 加入動畫效果
+            imageContainerEl.classList.add('fade-in');
             answerEl.classList.remove('hidden');
-            showAnswerBtn.classList.add('hidden'); // 隱藏自己
+            showAnswerBtn.classList.add('hidden');
         });
 
         nextBtn.addEventListener('click', () => {
             if (currentSlide < slides.length - 1) {
                 currentSlide++;
                 renderSlide();
+            } else {
+                gameContainer.style.display = 'none';
+                endScreen.style.display = 'flex';
             }
         });
 
@@ -349,30 +398,34 @@
 
         // 鍵盤控制支援
         document.addEventListener('keydown', (e) => {
-            // 防止在輸入框等地方觸發
             if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
             
-            switch(e.key) {
-                case 'ArrowLeft':
-                    prevBtn.click();
-                    break;
-                case 'ArrowRight':
-                    nextBtn.click();
-                    break;
-                case ' ':
-                case 'Enter':
-                    // 如果顯示答案按鈕可見，則觸發它
-                    if (!showAnswerBtn.classList.contains('hidden')) {
-                        e.preventDefault(); // 防止空白鍵滾動頁面
-                        showAnswerBtn.click();
-                    }
-                    break;
+            if (gameContainer.style.display === 'flex') {
+                 switch(e.key) {
+                    case 'ArrowLeft':
+                        prevBtn.click();
+                        break;
+                    case 'ArrowRight':
+                        nextBtn.click();
+                        break;
+                    case ' ':
+                    case 'Enter':
+                        if (!showAnswerBtn.classList.contains('hidden')) {
+                            e.preventDefault();
+                            showAnswerBtn.click();
+                        }
+                        break;
+                }
             }
         });
-
-        // 初始載入
-        preloadImages().then(() => {
-            renderSlide();    // 顯示第一張投影片
+        
+        // 為了讓圖片在背景預載，可以先觸發一次但不進入遊戲
+         slides.forEach(slide => {
+            const link = document.createElement('link');
+            link.rel = 'preload';
+            link.as = 'image';
+            link.href = slide.image;
+            document.head.appendChild(link);
         });
     </script>
 </body>
